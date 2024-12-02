@@ -2,6 +2,7 @@ import argparse
 import asyncio
 import importlib
 from pathlib import Path
+import sys
 from typing import Awaitable, Callable, Self, Type
 
 from advent_of_code.api import advent_of_code_session, fetch_problem_input
@@ -57,6 +58,8 @@ test_parser.add_argument("rest_args", nargs=argparse.REMAINDER, metavar="...")
 
 
 async def run(args: ProblemSolverArgNamespace) -> None:
+    sys.path.append(str(Path(args.problem_dir, "src")))
+
     instance_cache_path = Path(args.problem_dir, "cache", "input.txt")
     if instance_cache_path.exists():
         instance = args.instance_type.from_file(instance_cache_path)
@@ -80,8 +83,8 @@ async def run(args: ProblemSolverArgNamespace) -> None:
 
 
 async def test(args: ProblemSolverArgNamespace) -> None:
+    sys.path.append(str(Path(args.problem_dir, "src")))
     import unittest
-    print(args.rest_args)
     unittest.main(module=f"{args.solver_module_name}.test", argv=["unittest", *args.rest_args])
 
 
