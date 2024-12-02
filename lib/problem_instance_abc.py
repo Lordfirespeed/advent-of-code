@@ -5,7 +5,7 @@ from typing import Self
 
 
 @dataclass
-class ProblemInstanceBase(ABC):
+class ProblemInstanceABC(ABC):
     input_plaintext: str
 
     @abstractmethod
