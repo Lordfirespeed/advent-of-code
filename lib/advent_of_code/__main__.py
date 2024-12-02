@@ -4,6 +4,8 @@ import importlib
 from pathlib import Path
 from typing import Awaitable, Callable, Self, Type
 
+from advent_of_code.api import advent_of_code_session, fetch_problem_input
+from config import config
 from definitions import project_root_dir
 from problem_instance_abc import ProblemInstanceABC
 from protocols import ProblemSolver
@@ -55,7 +57,18 @@ test_parser.add_argument("rest_args", nargs=argparse.REMAINDER, metavar="...")
 
 
 async def run(args: ProblemSolverArgNamespace) -> None:
-    instance = args.instance_type.from_file(Path(args.problem_dir, "cache", "input.txt"))
+    instance_cache_path = Path(args.problem_dir, "cache", "input.txt")
+    if instance_cache_path.exists():
+        instance = args.instance_type.from_file(instance_cache_path)
+    else:
+        advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
+        assert advent_of_code_session_token is not None
+        async with advent_of_code_session(advent_of_code_session_token) as session:
+            instance_plaintext = await fetch_problem_input(session, args.problem_year, args.problem_day)
+        instance_cache_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(instance_cache_path, "w") as instance_cache_handle:
+            instance_cache_handle.write(instance_plaintext)
+        instance = args.instance_type(instance_plaintext)
 
     part_one_solver = args.part_one_solver_factory(instance)
     part_one_solution = part_one_solver.solve()
