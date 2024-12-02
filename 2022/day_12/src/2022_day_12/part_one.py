@@ -222,7 +222,7 @@ class MountainPathfinder:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         mountain_string = input_file.read()
 
     grid = MountainRange(mountain_string)

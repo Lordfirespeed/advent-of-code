@@ -31,7 +31,7 @@ class PartTwoSolution(Solution):
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         input_lines = [line.strip() for line in input_file.readlines()]
 
     solver = PartTwoSolution(input_lines)

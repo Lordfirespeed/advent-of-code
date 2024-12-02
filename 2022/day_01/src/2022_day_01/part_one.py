@@ -8,7 +8,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as inputFile:
+    with open(r"../../cache/input.txt") as inputFile:
         elves = inputFile.read().split("\n\n")
 
     elves = map(lambda x: x.split("\n"), elves)

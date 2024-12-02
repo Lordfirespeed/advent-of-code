@@ -98,7 +98,7 @@ class MonkeyInTheMiddle:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         monkeys_string = input_file.read()
     monkey_strings = monkeys_string.split("\n\n")
 

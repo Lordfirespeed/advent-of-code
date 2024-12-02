@@ -73,7 +73,7 @@ def batched_string(a: str, batch_size: 4) -> [str]:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         crates, instructions = input_file.read().split("\n\n")
 
     stacks = CrateStacks(crates)

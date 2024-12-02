@@ -28,7 +28,7 @@ class Solution(OldSolution):
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         sensor_datas = [line.strip() for line in input_file.readlines()]
 
     solver = Solution(sensor_datas)

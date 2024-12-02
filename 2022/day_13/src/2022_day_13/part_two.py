@@ -57,7 +57,7 @@ class PartTwoSolution(Solution):
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         packets_strings = [line.strip() for line in input_file.readlines()]
     packets_strings = filter("".__ne__, packets_strings)
 

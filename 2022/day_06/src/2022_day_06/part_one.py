@@ -12,7 +12,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         datastream = input_file.readline()
 
     solver = Solution(datastream)

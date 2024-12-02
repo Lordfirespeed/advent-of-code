@@ -37,7 +37,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         backpacks = [line.strip() for line in input_file.readlines()]
 
     solver = Solution(backpacks)

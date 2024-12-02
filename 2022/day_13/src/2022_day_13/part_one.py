@@ -82,7 +82,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         packets_string = input_file.read()
     packet_pair_strings = packets_string.split("\n\n")
 

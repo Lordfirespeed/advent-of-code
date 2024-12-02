@@ -53,7 +53,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         movements = [line.strip().split(" ") for line in input_file.readlines()]
     movements = [(Direction[direction], int(quantity)) for direction, quantity in movements]
 

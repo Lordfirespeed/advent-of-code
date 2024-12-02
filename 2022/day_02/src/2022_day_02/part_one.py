@@ -61,7 +61,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as inputFile:
+    with open(r"../../cache/input.txt") as inputFile:
         input_lines = [line.strip() for line in inputFile.readlines()]
 
     solver = Solution(input_lines)

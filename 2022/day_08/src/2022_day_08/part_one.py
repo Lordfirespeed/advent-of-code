@@ -50,7 +50,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         tree_height_strings = [line.strip() for line in input_file]
 
     tree_heights = [[int(char) for char in line] for line in tree_height_strings]

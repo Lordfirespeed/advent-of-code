@@ -137,7 +137,7 @@ class Solution:
 
 
 if __name__ == "__main__":
-    with open(r"../../input.txt") as input_file:
+    with open(r"../../cache/input.txt") as input_file:
         device_stdout = [line.strip() for line in input_file.readlines()]
 
     solver = Solution(device_stdout)
