@@ -15,14 +15,14 @@ class TestPartOne(unittest.TestCase):
     def test_example_01(self):
         instance = load_instance("example-01.txt")
         solver = PartOneSolver(instance)
-        self.assertEqual(solver.solve(), 7)
+        self.assertEqual(7, solver.solve())
 
 
 class TestPartTwo(unittest.TestCase):
     def test_example_01(self):
         instance = load_instance("example-01.txt")
         solver = PartTwoSolver(instance)
-        self.assertEqual(solver.solve(), 7)
+        self.assertEqual(7, solver.solve())
 
 
 if __name__ == "__main__":
