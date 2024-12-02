@@ -57,21 +57,24 @@ test_parser = subparsers.add_parser("test", add_help=False, prefix_chars="+")
 test_parser.add_argument("rest_args", nargs=argparse.REMAINDER, metavar="...")
 
 
-async def run(args: ProblemSolverArgNamespace) -> None:
-    sys.path.append(str(Path(args.problem_dir, "src")))
-
+async def load_problem_instance(args: ProblemSolverArgNamespace) -> ProblemInstanceABC:
     instance_cache_path = Path(args.problem_dir, "cache", "input.txt")
     if instance_cache_path.exists():
-        instance = args.instance_type.from_file(instance_cache_path)
-    else:
-        advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
-        assert advent_of_code_session_token is not None
-        async with advent_of_code_session(advent_of_code_session_token) as session:
-            instance_plaintext = await fetch_problem_input(session, args.problem_year, args.problem_day)
-        instance_cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(instance_cache_path, "w") as instance_cache_handle:
-            instance_cache_handle.write(instance_plaintext)
-        instance = args.instance_type(instance_plaintext)
+        return args.instance_type.from_file(instance_cache_path)
+
+    advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
+    assert advent_of_code_session_token is not None
+    async with advent_of_code_session(advent_of_code_session_token) as session:
+        instance_plaintext = await fetch_problem_input(session, args.problem_year, args.problem_day)
+    instance_cache_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(instance_cache_path, "w") as instance_cache_handle:
+        instance_cache_handle.write(instance_plaintext)
+    return args.instance_type(instance_plaintext)
+
+
+async def run(args: ProblemSolverArgNamespace) -> None:
+    sys.path.append(str(Path(args.problem_dir, "src")))
+    instance = await load_problem_instance(args)
 
     part_one_solver = args.part_one_solver_factory(instance)
     part_one_solution = part_one_solver.solve()
