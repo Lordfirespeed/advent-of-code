@@ -10,6 +10,7 @@ from .api import advent_of_code_session, fetch_problem_input
 from .args import AdventOfCodeArgNamespace
 from .scrape import get_problem_title
 
+
 async def load_problem_instance(args: AdventOfCodeArgNamespace, session: aiohttp.ClientSession) -> ProblemInstanceABC:
     instance_cache_path = Path(args.problem_dir, "cache", "input.txt")
     if instance_cache_path.exists():
