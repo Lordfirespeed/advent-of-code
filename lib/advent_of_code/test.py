@@ -3,6 +3,7 @@ import sys
 
 from .args import AdventOfCodeArgNamespace
 
+
 async def test(args: AdventOfCodeArgNamespace) -> None:
     sys.path.append(str(Path(args.problem_dir, "src")))
     import unittest
