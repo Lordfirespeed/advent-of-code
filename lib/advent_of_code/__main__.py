@@ -5,7 +5,7 @@ from .run import run
 from .test import test
 from .init_problem import init_problem
 
-parser.set_defaults(main=None, rest_args=[])
+parser.set_defaults(main=run, rest_args=[])
 run_parser.set_defaults(main=run)
 test_parser.set_defaults(main=test)
 init_parser.set_defaults(main=init_problem)
