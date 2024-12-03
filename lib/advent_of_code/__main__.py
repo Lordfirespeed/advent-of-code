@@ -1,67 +1,18 @@
-import argparse
 import asyncio
-import importlib
 from pathlib import Path
 import sys
-from typing import Awaitable, Callable, Self, Type
 
 import aiohttp
 from bs4 import BeautifulSoup
 
 from advent_of_code.api import advent_of_code_session, fetch_problem_input, fetch_problem_html
 from advent_of_code.scrape_problem_title import scrape_problem_title
+from args import parser, run_parser, test_parser, AdventOfCodeArgNamespace
 from config import config
-from definitions import project_root_dir
 from problem_instance_abc import ProblemInstanceABC
-from protocols import ProblemSolver
 
 
-class ProblemSolverArgNamespace(argparse.Namespace):
-    main: Callable[[Self], Awaitable[None]]
-    problem_year: int
-    problem_day: int
-    rest_args: list[str]
-
-    @property
-    def solver_module_name(self) -> str:
-        return f"{self.problem_year:04}_day_{self.problem_day:02}"
-
-    @property
-    def part_one_solver_factory(self) -> Type[ProblemSolver]:
-        module = importlib.import_module(f"{self.solver_module_name}.part_one")
-        return module.PartOneSolver
-
-    @property
-    def part_two_solver_factory(self) -> Type[ProblemSolver]:
-        module = importlib.import_module(f"{self.solver_module_name}.part_two")
-        return module.PartTwoSolver
-
-    @property
-    def problem_dir(self) -> Path:
-        return Path(project_root_dir, f"{self.problem_year:04}", f"day_{self.problem_day:02}")
-
-    @property
-    def instance_type(self) -> Type[ProblemInstanceABC]:
-        module = importlib.import_module(f"{self.solver_module_name}.problem")
-        return module.ProblemInstance
-
-
-parser = argparse.ArgumentParser(
-    prog="advent_of_code",
-)
-
-parser.add_argument("-y", "--year", required=True, dest="problem_year", metavar="year", type=int)
-parser.add_argument("-d", "--day", required=True, dest="problem_day", metavar="day", type=int)
-
-subparsers = parser.add_subparsers(required=False)
-
-run_parser = subparsers.add_parser("run")
-
-test_parser = subparsers.add_parser("test", add_help=False, prefix_chars="+")
-test_parser.add_argument("rest_args", nargs=argparse.REMAINDER, metavar="...")
-
-
-async def load_problem_instance(args: ProblemSolverArgNamespace, session: aiohttp.ClientSession) -> ProblemInstanceABC:
+async def load_problem_instance(args: AdventOfCodeArgNamespace, session: aiohttp.ClientSession) -> ProblemInstanceABC:
     instance_cache_path = Path(args.problem_dir, "cache", "input.txt")
     if instance_cache_path.exists():
         print("Using cached problem input")
@@ -76,7 +27,7 @@ async def load_problem_instance(args: ProblemSolverArgNamespace, session: aiohtt
     return args.instance_type(instance_plaintext)
 
 
-async def get_problem_html_soup(args: ProblemSolverArgNamespace, session: aiohttp.ClientSession) -> BeautifulSoup:
+async def get_problem_html_soup(args: AdventOfCodeArgNamespace, session: aiohttp.ClientSession) -> BeautifulSoup:
     html_cache_path = Path(args.problem_dir, "cache", "problem.html")
     if html_cache_path.exists():
         with open(html_cache_path) as html_cache_handle:
@@ -90,7 +41,7 @@ async def get_problem_html_soup(args: ProblemSolverArgNamespace, session: aiohtt
     return BeautifulSoup(problem_html, features="html.parser")
 
 
-async def get_problem_title(args: ProblemSolverArgNamespace, session: aiohttp.ClientSession) -> str:
+async def get_problem_title(args: AdventOfCodeArgNamespace, session: aiohttp.ClientSession) -> str:
     title_cache_path = Path(args.problem_dir, "cache", "title.txt")
     if title_cache_path.exists():
         with open(title_cache_path) as title_cache_handle:
@@ -105,7 +56,7 @@ async def get_problem_title(args: ProblemSolverArgNamespace, session: aiohttp.Cl
     return title
 
 
-async def run(args: ProblemSolverArgNamespace) -> None:
+async def run(args: AdventOfCodeArgNamespace) -> None:
     sys.path.append(str(Path(args.problem_dir, "src")))
 
     advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
@@ -124,7 +75,7 @@ async def run(args: ProblemSolverArgNamespace) -> None:
     print(f"Part two: {part_two_solution}")
 
 
-async def test(args: ProblemSolverArgNamespace) -> None:
+async def test(args: AdventOfCodeArgNamespace) -> None:
     sys.path.append(str(Path(args.problem_dir, "src")))
     import unittest
     unittest.main(module=f"{args.solver_module_name}.test", argv=["unittest", *args.rest_args])
@@ -136,7 +87,7 @@ test_parser.set_defaults(main=test)
 
 
 async def main() -> None:
-    args = parser.parse_args(None, ProblemSolverArgNamespace())
+    args = parser.parse_args(None, AdventOfCodeArgNamespace())
     await args.main(args)
 
 
