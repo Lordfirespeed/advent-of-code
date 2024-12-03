@@ -3,6 +3,7 @@ from typing import TypedDict
 
 from config import config
 from definitions import project_root_dir
+from shell import git
 from skeleton_builder.generate import use_template
 
 from .api import advent_of_code_session
@@ -25,6 +26,7 @@ async def init_problem(args: AdventOfCodeArgNamespace) -> None:
 
     if not args.problem_dir.exists():
         use_template(args.problem_dir, problem_template_dir, context)
+        await git.add(project_root_dir, [args.problem_dir])
 
     advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
     assert advent_of_code_session_token is not None
