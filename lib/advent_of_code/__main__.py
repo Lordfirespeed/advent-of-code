@@ -13,7 +13,6 @@ init_parser.set_defaults(main=init_problem_folder)
 
 async def main() -> None:
     args = parser.parse_args(None, AdventOfCodeArgNamespace())
-    print(args.rest_args)
     await args.main(args)
 
 
