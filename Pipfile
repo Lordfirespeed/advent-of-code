@@ -8,6 +8,7 @@ python-dotenv = "*"
 aiohttp = "*"
 beautifulsoup4 = "*"
 jinja2 = "*"
+numpy = "*"
 
 [dev-packages]
 
