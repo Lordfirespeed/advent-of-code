@@ -12,6 +12,7 @@
 
 ## 'cache' subdirs
 cache
+__pycache__
 
 ## Template
 !/template
