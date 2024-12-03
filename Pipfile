@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 aiohttp = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 

@@ -12,3 +12,9 @@ async def fetch_problem_input(session: aiohttp.ClientSession, year: int, day: in
     async with session.get(urljoin(api_host, f"{year}/day/{day}/input")) as response:
         response.raise_for_status()
         return await response.text()
+
+
+async def fetch_problem_html(session: aiohttp.ClientSession, year: int, day: int) -> str:
+    async with session.get(urljoin(api_host, f"{year}/day/{day}")) as response:
+        response.raise_for_status()
+        return await response.text()
