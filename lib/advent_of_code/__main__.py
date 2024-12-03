@@ -1,16 +1,19 @@
 import asyncio
 
-from .args import parser, run_parser, test_parser, AdventOfCodeArgNamespace
+from .args import parser, run_parser, test_parser, AdventOfCodeArgNamespace, init_parser
 from .run import run
 from .test import test
+from .init_problem_folder import init_problem_folder
 
-parser.set_defaults(main=run, rest_args=[])
-run_parser.set_defaults(main=run, rest_args=[])
+parser.set_defaults(main=None, rest_args=[])
+run_parser.set_defaults(main=run)
 test_parser.set_defaults(main=test)
+init_parser.set_defaults(main=init_problem_folder)
 
 
 async def main() -> None:
     args = parser.parse_args(None, AdventOfCodeArgNamespace())
+    print(args.rest_args)
     await args.main(args)
 
 

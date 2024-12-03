@@ -51,3 +51,5 @@ run_parser = subparsers.add_parser("run")
 
 test_parser = subparsers.add_parser("test", add_help=False, prefix_chars="+")
 test_parser.add_argument("rest_args", nargs=argparse.REMAINDER, metavar="...")
+
+init_parser = subparsers.add_parser("init")
