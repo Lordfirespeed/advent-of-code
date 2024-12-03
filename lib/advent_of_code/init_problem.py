@@ -15,7 +15,7 @@ class ProblemTemplateContext(TypedDict):
     PROBLEM_DAY: str
 
 
-async def init_problem_folder(args: AdventOfCodeArgNamespace) -> None:
+async def init_problem(args: AdventOfCodeArgNamespace) -> None:
     context: ProblemTemplateContext = { 
         "PROBLEM_YEAR": f"{args.problem_year:04}",
         "PROBLEM_DAY": f"{args.problem_day:02}",
