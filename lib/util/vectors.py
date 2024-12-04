@@ -26,6 +26,9 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
             return super().__eq__(other)
         return numpy.array_equal(self, other)
 
+    def __hash__(self) -> int:
+        return hash((self[0], self[1]))
+
     def __ge__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
         return numpy.greater_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
