@@ -21,10 +21,22 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
         new_object = super().__new__(cls, (2,), buffer=buffer, dtype=object)
         return new_object
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, pos):
             return super().__eq__(other)
         return numpy.array_equal(self, other)
+
+    def __ge__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
+        return numpy.greater_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+
+    def __le__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
+        return numpy.less_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+
+    def __gt__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
+        return numpy.greater(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+
+    def __lt__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
+        return numpy.less(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __repr__(self):
         return f"Pos({self[0]}, {self[1]})"
