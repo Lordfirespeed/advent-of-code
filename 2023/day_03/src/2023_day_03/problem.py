@@ -2,10 +2,8 @@ from dataclasses import dataclass
 from functools import reduce
 from typing import overload
 
-import numpy as np
-
 from problem_instance_abc import ProblemInstanceABC
-from util.vectors import Position
+from util.vectors import pos
 
 
 def assert_equal_length(first: str, second: str) -> str:
@@ -32,8 +30,12 @@ class Schematic(list[str]):
     def height(self):
         return len(self)
 
+    @property
+    def shape(self):
+        return pos(self.height, self.width)
+
     @overload
-    def __getitem__(self, item: Position) -> str: ...
+    def __getitem__(self, item: pos) -> str: ...
 
     @overload
     def __getitem__(self, item: int) -> str: ...
@@ -42,7 +44,7 @@ class Schematic(list[str]):
     def __getitem__(self, item: slice) -> list[str]: ...
 
     def __getitem__(self, item):
-        if isinstance(item, np.ndarray):
+        if isinstance(item, pos):
             assert item.shape == (2,)
             y,x = item
             return super().__getitem__(y).__getitem__(x)
