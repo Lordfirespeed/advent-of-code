@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from functools import reduce
 from typing import overload
 
@@ -11,7 +10,6 @@ def assert_equal_length(first: str, second: str) -> str:
     return second
 
 
-@dataclass
 class Schematic(list[str]):
     def __init__(self, *args, **kwargs) -> None:
         if len(args) > 0:
