@@ -9,10 +9,22 @@ from .math import ceil_div, prod
 
 
 class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproperty.Meta):
+    @classmethod
+    def immutable(cls, y: int, x: int) -> Self:
+        instance = cls(y, x)
+        instance.setflags(write=False)
+        return instance
+
+    @classmethod
+    def mutable(cls, y: int, x: int) -> Self:
+        instance = cls(y, x)
+        instance.setflags(write=True)
+        return instance
+
     @classproperty
     @classmethod
     def zero(cls: Self):
-        return cls(0, 0)
+        return cls.immutable(0, 0)
 
     def rotate_clockwise(self, repeat=1) -> Self:
         # matrix is [[0 1] [-1 0]] (by rows)
@@ -35,6 +47,7 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
         assert isinstance(x, int)
         buffer = np.array((y, x), dtype=object)
         new_object = super().__new__(cls, (2,), buffer=buffer, dtype=object)
+        new_object.setflags(write=False)
         return new_object
 
     def __eq__(self, other) -> bool:
