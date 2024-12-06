@@ -10,7 +10,6 @@ from typing import (
     overload, 
 )
 
-import numpy
 import numpy as np
 
 from .classproperty import classproperty
@@ -64,22 +63,22 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
     def __eq__(self, other) -> bool:
         if not isinstance(other, pos):
             return super().__eq__(other)
-        return numpy.array_equal(self, other)
+        return np.array_equal(self, other)
 
     def __hash__(self) -> int:
         return hash((self[0], self[1]))
 
     def __ge__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
-        return numpy.greater_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+        return np.greater_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __le__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
-        return numpy.less_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+        return np.less_equal(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __gt__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
-        return numpy.greater(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+        return np.greater(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __lt__(self, other) -> np.ndarray[tuple[Literal[2]], np.dtype[bool]]:
-        return numpy.less(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
+        return np.less(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __repr__(self):
         return f"pos({self[0]}, {self[1]})"
