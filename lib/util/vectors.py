@@ -25,6 +25,8 @@ _matrix2by2 = np.ndarray[tuple[Literal[2], Literal[2]], np.dtype[object]]
 class pos(_vector2, metaclass=classproperty.Meta):
     anticlockwise_rotation_matrix: ClassVar[_matrix2by2] = np.array([[0, -1], [1, 0]])
     clockwise_rotation_matrix: ClassVar[_matrix2by2] = -anticlockwise_rotation_matrix
+    anticlockwise_rotation_matrix.setflags(write=False)
+    clockwise_rotation_matrix.setflags(write=False)
 
     @classmethod
     def immutable(cls, y: int, x: int) -> Self:
