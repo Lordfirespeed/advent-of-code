@@ -42,7 +42,7 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
         return numpy.less(self, other, out=np.ndarray((2,), dtype=bool), casting="unsafe")
 
     def __repr__(self):
-        return f"Pos({self[0]}, {self[1]})"
+        return f"pos({self[0]}, {self[1]})"
 
 
 type Position = pos
@@ -200,6 +200,11 @@ class pos_range(Sequence[Position]):
             __key = difference
 
         return self.start + self.step * cursor
+
+    def __repr__(self):
+        if self.step == 1:
+            return f"pos_range({repr(self.start)}, {repr(self.stop)})"
+        return f"pos_range({repr(self.start)}, {repr(self.stop)}, {self.step})"
 
 
 class pos_range_iterator(Iterator[Position]):
