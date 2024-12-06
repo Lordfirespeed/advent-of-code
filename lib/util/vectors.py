@@ -14,6 +14,14 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
     def zero(cls: Self):
         return cls(0, 0)
 
+    def rotate_clockwise(self, repeat=1) -> Self:
+        # matrix is [[0 1] [-1 0]] (by rows)
+        return self.__class__(self[1], -self[0])
+
+    def rotate_anticlockwise(self, repeat=1) -> Self:
+        # matrix is [[0 -1] [1 0]] (by rows)
+        return self.__class__(-self[1], self[0])
+
     @overload
     def __getitem__(self, item: Literal[0, 1]) -> int: ...
 
