@@ -1,5 +1,14 @@
 from operator import index
-from typing import Literal, overload, SupportsIndex, final, Sequence, Self, TypeGuard, Iterator
+from typing import (
+    Iterator,
+    Literal, 
+    Self, 
+    Sequence,
+    SupportsIndex, 
+    TypeGuard, 
+    final, 
+    overload, 
+)
 
 import numpy
 import numpy as np
@@ -9,6 +18,8 @@ from .math import ceil_div, prod
 
 
 class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproperty.Meta):
+    
+    
     @classmethod
     def immutable(cls, y: int, x: int) -> Self:
         instance = cls(y, x)
