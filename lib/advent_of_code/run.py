@@ -27,6 +27,10 @@ async def load_problem_instance(args: AdventOfCodeArgNamespace, session: aiohttp
 
 
 async def run(args: AdventOfCodeArgNamespace) -> None:
+    if not args.problem_dir.exists():
+        print(f"Problem not initialized. Run `advent_of_code -y {args.problem_year} -d {args.problem_day} init` and try again.")
+        return
+
     sys.path.append(str(Path(args.problem_dir, "src")))
 
     advent_of_code_session_token = config.get("ADVENT_OF_CODE_SESSION", None)
