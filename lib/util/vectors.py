@@ -40,6 +40,12 @@ class pos(_vector2, metaclass=classproperty.Meta):
         instance.setflags(write=True)
         return instance
 
+    def as_immutable(self) -> Self:
+        return self.__class__.immutable(*self)
+    
+    def as_mutable(self) -> Self:
+        return self.__class__.mutable(*self)
+
     @classproperty
     @classmethod
     def zero(cls: Self):
