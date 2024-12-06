@@ -1,5 +1,6 @@
 from operator import index
 from typing import (
+    ClassVar,
     Iterator,
     Literal, 
     Self, 
@@ -11,14 +12,20 @@ from typing import (
 )
 
 import numpy as np
+import numpy.linalg
 
 from .classproperty import classproperty
 from .math import ceil_div, prod
 
 
-class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproperty.Meta):
-    
-    
+_vector2 = np.ndarray[tuple[Literal[2]], np.dtype[object]]
+_matrix2by2 = np.ndarray[tuple[Literal[2], Literal[2]], np.dtype[object]]
+
+
+class pos(_vector2, metaclass=classproperty.Meta):
+    anticlockwise_rotation_matrix: ClassVar[_matrix2by2] = np.array([[0, -1], [1, 0]])
+    clockwise_rotation_matrix: ClassVar[_matrix2by2] = -anticlockwise_rotation_matrix
+
     @classmethod
     def immutable(cls, y: int, x: int) -> Self:
         instance = cls(y, x)
@@ -36,13 +43,15 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
     def zero(cls: Self):
         return cls.immutable(0, 0)
 
-    def rotate_clockwise(self, repeat=1) -> Self:
-        # matrix is [[0 1] [-1 0]] (by rows)
-        return self.__class__(self[1], -self[0])
+    def rotate_clockwise(self, *, repeat=1) -> Self:
+        repeat %= 4
+        repeated_rotation_matrix = numpy.linalg.matrix_power(self.clockwise_rotation_matrix, repeat)
+        return repeated_rotation_matrix @ self
 
-    def rotate_anticlockwise(self, repeat=1) -> Self:
-        # matrix is [[0 -1] [1 0]] (by rows)
-        return self.__class__(-self[1], self[0])
+    def rotate_anticlockwise(self, *, repeat=1) -> Self:
+        repeat %= 4
+        repeated_rotation_matrix = numpy.linalg.matrix_power(self.anticlockwise_rotation_matrix, repeat)
+        return repeated_rotation_matrix @ self
 
     @overload
     def __getitem__(self, item: Literal[0, 1]) -> int: ...
