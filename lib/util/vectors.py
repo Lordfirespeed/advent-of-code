@@ -14,6 +14,14 @@ class pos(np.ndarray[tuple[Literal[2]], np.dtype[object]], metaclass=classproper
     def zero(cls: Self):
         return cls(0, 0)
 
+    @overload
+    def __getitem__(self, item: Literal[0, 1]) -> int: ...
+
+    def __getitem__(self, item):
+        if not isinstance(item, SupportsIndex):
+            raise TypeError("pos indices must be integers or None or have an __index__ method")
+        return super().__getitem__(item)
+
     def __new__(cls, y: int, x: int):
         assert isinstance(y, int)
         assert isinstance(x, int)
