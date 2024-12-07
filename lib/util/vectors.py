@@ -274,7 +274,7 @@ class pos_range_iterator(Iterator[Position]):
         self.start = start
         self.step = step
         self.shape = shape
-        self.cursor = pos.zero
+        self.cursor = pos.zero.as_mutable()
 
     def __iter__(self) -> Iterator[Position]:
         return self
