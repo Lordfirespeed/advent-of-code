@@ -1,3 +1,4 @@
+from multiprocessing.managers import Value
 from operator import index
 from typing import (
     ClassVar,
@@ -63,8 +64,15 @@ class pos(_vector2, metaclass=classproperty.Meta):
 
     @overload
     def __getitem__(self, item: Literal[0, 1]) -> int: ...
+    
+    @overload
+    def __getitem__(self, item: tuple[Literal[0,1]]) -> int: ...
 
     def __getitem__(self, item):
+        if isinstance(item, tuple):
+            if len(item) != 1:
+                raise IndexError(f"too many indices for pos: pos is 1-dimensional, but {len(item)} were indexed")
+            return self[item[0]]
         if not isinstance(item, SupportsIndex):
             raise TypeError("pos indices must be integers or None or have an __index__ method")
         return super().__getitem__(item)
