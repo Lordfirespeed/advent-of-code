@@ -16,7 +16,7 @@ class AdventOfCodeArgNamespace(argparse.Namespace):
 
     @property
     def solver_module_name(self) -> str:
-        return f"{self.problem_year:04}_day_{self.problem_day:02}"
+        return f"aoc_{self.problem_year:04}_day_{self.problem_day:02}"
 
     @property
     def part_one_solver_factory(self) -> Type[ProblemSolver]:
