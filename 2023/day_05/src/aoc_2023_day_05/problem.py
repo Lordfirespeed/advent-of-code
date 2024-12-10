@@ -1,30 +1,20 @@
 import re
 from dataclasses import dataclass
 from operator import indexOf
-from typing import ClassVar, Self, Iterator
+from typing import ClassVar, Self
 
 from problem_instance_abc import ProblemInstanceABC
-
+from util.span import span
 
 @dataclass(frozen=True)
 class Item:
     item_id: int
     item_type: str
 
-
 @dataclass(frozen=True)
 class ItemRange:
-    item_id_range_start: int
-    length: int
     item_type: str
-
-    def __iter__(self) -> Iterator[Item]:
-        return (Item(item_id, self.item_type) for item_id in self.item_id_range)
-
-    @property
-    def item_id_range(self) -> range:
-        return range(self.item_id_range_start, self.item_id_range_start + self.length)
-
+    id_ranges: tuple[span, ...]
 
 @dataclass(frozen=True)
 class MapRange:
@@ -33,12 +23,12 @@ class MapRange:
     length: int
 
     @property
-    def source_range(self) -> range:
-        return range(self.source_range_start, self.source_range_start + self.length)
+    def source_range(self) -> span:
+        return span(self.source_range_start, self.source_range_start+self.length)
 
     @property
-    def destination_range(self) -> range:
-        return range(self.destination_range_start, self.destination_range_start + self.length)
+    def destination_range(self) -> span:
+        return span(self.destination_range_start, self.destination_range_start+self.length)
 
     def __contains__(self, item) -> bool:
         return item in self.source_range
@@ -104,7 +94,7 @@ class ProblemInstance(ProblemInstanceABC):
 
         # https://stackoverflow.com/a/23286299/11045433
         seed_ids_iter = iter(seed_ids)
-        self.seed_ranges = [ItemRange(start, length, "seed") for start, length in zip(seed_ids_iter, seed_ids_iter)]
+        self.seed_ranges = [ItemRange("seed", (span(start, start+length),)) for start, length in zip(seed_ids_iter, seed_ids_iter)]
 
     def parse_maps(self, map_paragraphs: list[str]) -> None:
         self.maps = [Map.from_string(map_paragraph) for map_paragraph in map_paragraphs]
