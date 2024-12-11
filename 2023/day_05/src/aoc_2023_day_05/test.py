@@ -22,7 +22,7 @@ class TestPartTwo(unittest.TestCase):
     def test_example_01(self):
         instance = load_instance("example-01.txt")
         solver = PartTwoSolver(instance)
-        self.assertEqual(7, solver.solve())
+        self.assertEqual(46, solver.solve())
 
 
 if __name__ == "__main__":
