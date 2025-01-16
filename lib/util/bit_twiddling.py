@@ -1,0 +1,40 @@
+from typing import (
+    Iterable,
+    Literal,
+    SupportsBytes,
+    SupportsIndex, 
+)
+
+
+type BytesLike = Iterable[SupportsIndex] | SupportsBytes
+
+
+def byte_length(value: int) -> int:
+    # 2^3 = 8, so right-shifting 3 times is equivalent to dividing by 8
+    return ((value.bit_length() - 1) >> 3) + 1
+
+
+def signed_bin(value: int) -> str:
+    binary_byte_length = byte_length(value)
+    binary_bit_length = binary_byte_length * 8
+    signed_value_bytes = value.to_bytes(length=binary_byte_length, signed=True)
+    unsigned_value_integer = int.from_bytes(signed_value_bytes)
+    return f"{unsigned_value_integer:0{binary_bit_length}b}"
+
+
+def last_set_bit_index(binary: int | BytesLike) -> int | Literal[-1]:
+    """
+    Compute the index (from the right) of the right-most '1' bit in 'binary'.
+    For integer powers of 2, this computes log_2(binary).
+    If there exists no index (because the input contains no set bits), returns -1.
+    """
+    if type(binary) is not int:
+        binary = int.from_bytes(binary, byteorder="big")
+
+    if binary == 0:
+        return -1
+
+    # bit-hack to create a bit-mask of exactly 1 '1' bit, in the position of the right-most '1' bit from 'binary'
+    highest_bit_mask = binary & -binary
+
+    return highest_bit_mask.bit_length() - 1
