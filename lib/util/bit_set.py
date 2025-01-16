@@ -268,7 +268,7 @@ class BitSet:
         if self._words_in_use == 0:
             return 0
         
-        last_word_length = first_set_bit_index(self._words[self._words_in_use]) + 1
+        last_word_length = first_set_bit_index(self._words[self._words_in_use - 1]) + 1
         return (self.bits_per_word * (self._words_in_use - 1)) + last_word_length
 
     def bits_capacity(self) -> int:
