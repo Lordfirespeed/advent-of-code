@@ -2,9 +2,12 @@ from typing import (
     Iterable,
     Literal,
     SupportsBytes,
-    SupportsIndex, 
+    SupportsIndex,
     SupportsInt,
+    overload,
 )
+
+from numpy import integer
 
 
 type BytesLike = Iterable[SupportsIndex] | SupportsBytes
@@ -51,7 +54,8 @@ def last_set_bit_index(binary: SupportsInt | BytesLike) -> int | Literal[-1]:
 
     return highest_bit_mask.bit_length() - 1
 
-def first_set_bit_index(binary: int | BytesLike) -> int | Literal[-1]:
+
+def first_set_bit_index(binary: SupportsInt | BytesLike) -> int | Literal[-1]:
     """
     Compute the index (from the right) of the left-most '1' bit in 'binary'.
     If there exists no index (because the input contains no set bits), returns -1.
@@ -65,3 +69,21 @@ def first_set_bit_index(binary: int | BytesLike) -> int | Literal[-1]:
         return -1
     
     return binary.bit_length() - 1
+
+
+@overload
+def circular_left_shift(value: integer, shift: int | integer, width: int | integer) -> integer: ...
+@overload
+def circular_left_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
+
+def circular_left_shift(value, shift, width):
+    # https://stackoverflow.com/a/63767548/11045433
+    return ((value << shift) % (1 << width)) | (value >> (width - shift))
+
+@overload
+def circular_right_shift(value: integer, shift: int | integer, width: int | integer) -> integer: ...
+@overload
+def circular_right_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
+
+def circular_right_shift(value, shift, width):
+    return (value >> shift) | ((value << (width - shift)) % (1 << width))
