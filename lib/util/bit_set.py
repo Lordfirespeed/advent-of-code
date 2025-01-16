@@ -20,7 +20,10 @@ from typing import (
 import numpy
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
-from util.bit_twiddling import first_set_bit_index
+from util.bit_twiddling import (
+    first_set_bit_index, 
+    circular_left_shift
+)
 from util.protocols import SupportsCopy, SupportsBool
 
 
@@ -205,7 +208,7 @@ class BitSet:
 
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
-        self._words[word_index] ^= (1 << bit_index)
+        self._words[word_index] ^= circular_left_shift(1, bit_index, self.bits_per_word)
         
         self._recalculate_words_in_use()
         self._ensure_invariants()
@@ -222,7 +225,7 @@ class BitSet:
         
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
-        self._words[word_index] |= (1 << bit_index)
+        self._words[word_index] |= circular_left_shift(1, bit_index, self.bits_per_word)
     
     def set_region(self, bit_slice: slice, value: SupportsBool = True) -> None:
         raise NotImplemented
@@ -238,7 +241,7 @@ class BitSet:
         if word_index >= self._words_in_use:
             return
 
-        self._words[word_index] &= ~(1 << bit_index)
+        self._words[word_index] &= ~circular_left_shift(1, bit_index, self.bits_per_word)
         
         self._recalculate_words_in_use()
         self._ensure_invariants()
