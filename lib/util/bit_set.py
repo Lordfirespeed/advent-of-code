@@ -216,6 +216,9 @@ class BitSet:
         raise NotImplemented
     
     def set(self, bit_index: SupportsIndex, value: SupportsBool = True) -> None:
+        if value is False:
+            return self.clear(bit_index)
+
         bit_index = index(bit_index)
         if bit_index < 0:
             bit_index += len(self)
