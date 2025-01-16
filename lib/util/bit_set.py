@@ -17,6 +17,7 @@ from typing import (
     overload,
 )
 
+import numpy
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
 from util.protocols import SupportsCopy, SupportsBool
@@ -195,25 +196,59 @@ class BitSet:
     # region 'public' API/methods/assignment operators
     
     def flip(self, bit_index: SupportsIndex) -> None:
-        raise NotImplemented
+        bit_index = index(bit_index)
+        if bit_index < 0:
+            bit_index += len(self)
+        if bit_index < 0:
+            raise IndexError("BitSet index out of range")
+
+        word_index = self._word_index(bit_index)
+        self._expand_to(word_index)
+        self._words[word_index] ^= (1 << bit_index)
+        
+        self._recalculate_words_in_use()
+        self._ensure_invariants()
     
     def flip_region(self, bit_slice: slice) -> None:
         raise NotImplemented
     
     def set(self, bit_index: SupportsIndex, value: SupportsBool = True) -> None:
-        raise NotImplemented
+        bit_index = index(bit_index)
+        if bit_index < 0:
+            bit_index += len(self)
+        if bit_index < 0:
+            raise IndexError("BitSet index out of range")
+        
+        word_index = self._word_index(bit_index)
+        self._expand_to(word_index)
+        self._words[word_index] |= (1 << bit_index)
     
     def set_region(self, bit_slice: slice, value: SupportsBool = True) -> None:
         raise NotImplemented
     
     def clear(self, bit_index: SupportsIndex) -> None:
-        raise NotImplemented
-    
+        bit_index = index(bit_index)
+        if bit_index < 0:
+            bit_index += len(self)
+        if bit_index < 0:
+            raise IndexError("BitSet index out of range")
+
+        word_index = self._word_index(bit_index)
+        if word_index >= self._words_in_use:
+            return
+
+        self._words[word_index] &= ~(1 << bit_index)
+        
+        self._recalculate_words_in_use()
+        self._ensure_invariants()
+
     def clear_region(self, bit_slice: slice) -> None:
         raise NotImplemented
 
     def clear_all(self) -> None:
-        raise NotImplemented
+        # https://stackoverflow.com/a/69890243/11045433
+        self._words = array_of_zeros(len(self._words), dtype=uint64)
+        self._words_in_use = 0
 
     # endregion
     
