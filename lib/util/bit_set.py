@@ -20,6 +20,7 @@ from typing import (
 import numpy
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
+from util.bit_twiddling import first_set_bit_index
 from util.protocols import SupportsCopy, SupportsBool
 
 
@@ -259,14 +260,18 @@ class BitSet:
         Returns the 'logical size' of this BitSet - the index of its highest set bit plus one.
         Returns zero when the BitSet is clear.
         """
-        raise NotImplemented
+        if self._words_in_use == 0:
+            return 0
+        
+        last_word_length = first_set_bit_index(self._words[self._words_in_use]) + 1
+        return (self.bits_per_word * (self._words_in_use - 1)) + last_word_length
 
     def bits_capacity(self) -> int:
         """
         Returns the number of bits of space in use by this BitSet. 
         The maximum element in a BitSet is at index (size - 1). 
         """
-        raise NotImplemented
+        return self.bits_per_word * len(self._words)
 
     def is_empty(self) -> bool:
         return self._words_in_use == 0
