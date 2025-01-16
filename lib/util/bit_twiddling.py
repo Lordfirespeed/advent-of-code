@@ -44,3 +44,16 @@ def last_set_bit_index(binary: int | BytesLike) -> int | Literal[-1]:
     highest_bit_mask = binary & -binary
 
     return highest_bit_mask.bit_length() - 1
+
+def first_set_bit_index(binary: int | BytesLike) -> int | Literal[-1]:
+    """
+    Compute the index (from the right) of the left-most '1' bit in 'binary'.
+    If there exists no index (because the input contains no set bits), returns -1.
+    """
+    if type(binary) is not int:
+        binary = int.from_bytes(binary, byteorder="big")
+    
+    if binary == 0:
+        return -1
+    
+    return binary.bit_length() - 1
