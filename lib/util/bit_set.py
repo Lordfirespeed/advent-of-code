@@ -164,8 +164,18 @@ class BitSet:
             return True
         if not isinstance(other, BitSet):
             return False
-
-        raise NotImplemented
+        
+        self._ensure_invariants()
+        other._ensure_invariants()
+        
+        if self._words_in_use != other._words_in_use:
+            return False
+        
+        for self_word, other_word in zip(self._words, other._words):
+            if self_word != other_word:
+                return False
+        
+        return True
 
     # endregion
 
