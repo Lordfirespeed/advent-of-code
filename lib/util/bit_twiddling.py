@@ -77,6 +77,8 @@ def circular_left_shift(value: integer, shift: int | integer, width: int | integ
 def circular_left_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
 
 def circular_left_shift(value, shift, width):
+    if isinstance(value, integer):
+        return (value << shift) | (value >> (width - shift))
     # https://stackoverflow.com/a/63767548/11045433
     return ((value << shift) % (1 << width)) | (value >> (width - shift))
 
@@ -86,4 +88,6 @@ def circular_right_shift(value: integer, shift: int | integer, width: int | inte
 def circular_right_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
 
 def circular_right_shift(value, shift, width):
+    if isinstance(value, integer):
+        return (value >> shift) | (value << (width - shift))
     return (value >> shift) | ((value << (width - shift)) % (1 << width))
