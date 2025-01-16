@@ -10,12 +10,18 @@ type BytesLike = Iterable[SupportsIndex] | SupportsBytes
 
 
 def byte_length(value: int) -> int:
+    assert value > 0
     # 2^3 = 8, so right-shifting 3 times is equivalent to dividing by 8
     return ((value.bit_length() - 1) >> 3) + 1
 
 
+def signed_byte_length(value: int) -> int:
+    # 2^3 = 8, so right-shifting 3 times is equivalent to dividing by 8
+    return (value.bit_length() >> 3) + 1
+
+
 def signed_bin(value: int) -> str:
-    binary_byte_length = byte_length(value)
+    binary_byte_length = signed_byte_length(value)
     binary_bit_length = binary_byte_length * 8
     signed_value_bytes = value.to_bytes(length=binary_byte_length, signed=True)
     unsigned_value_integer = int.from_bytes(signed_value_bytes)
