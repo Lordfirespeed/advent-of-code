@@ -66,7 +66,13 @@ class BitSet:
         return bit_index >> cls.address_bits_per_word
 
     def _recalculate_words_in_use(self) -> None:
-        raise NotImplemented
+        for word_index in reversed(range(self._words_in_use)):
+            if self._words[word_index] != 0:
+                break
+        else:
+            self._words_in_use = 0
+            return
+        self._words_in_use = word_index + 1
 
     def _ensure_capacity(self, word_count: int) -> None:
         """
