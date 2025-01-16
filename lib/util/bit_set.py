@@ -17,7 +17,6 @@ from typing import (
     overload,
 )
 
-import numpy
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
 from util.bit_twiddling import (
