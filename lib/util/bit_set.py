@@ -6,18 +6,20 @@
 # Copyright (c) 1995, 2024, Oracle and/or its affiliates. All rights reserved.
 # Oracle and/or its affiliates license the referenced material to Lordfirespeed under the terms of the GPL-2.0-only license.
 
+from operator import index
 from typing import (
     ClassVar,
     Iterable,
     Literal,
     Self,
     SupportsBytes,
-    SupportsIndex, overload,
+    SupportsIndex, 
+    overload,
 )
 
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
-from util.protocols import SupportsCopy
+from util.protocols import SupportsCopy, SupportsBool
 
 
 type BytesLike = Iterable[SupportsIndex] | SupportsBytes
@@ -134,20 +136,28 @@ class BitSet:
         return self.bits_length()
     
     @overload
-    def __getitem__(self, bit_index: int) -> bool: ...
+    def __getitem__(self, bit_index: SupportsIndex) -> bool: ...
     @overload
     def __getitem__(self, bit_slice: slice) -> Self: ...
 
     def __getitem__(self, bit_target):
-        pass
-    
+        if isinstance(bit_target, SupportsIndex):
+            return self.get(bit_target)
+        if isinstance(bit_target, slice):
+            return self.get_region(bit_target)
+        raise TypeError(f"BitSet indices must be slices or implement __index__, not {type(bit_target).__name__}")
+
     @overload
-    def __setitem__(self, bit_index: int, value: bool) -> None: ...
+    def __setitem__(self, bit_index: SupportsIndex, value: SupportsBool) -> None: ...
     @overload
-    def __setitem__(self, bit_slice: slice, value: Self) -> None: ...
+    def __setitem__(self, bit_slice: slice, value: SupportsBool) -> None: ...
     
     def __setitem__(self, bit_target, value) -> None:
-        pass
+        if isinstance(bit_target, SupportsIndex):
+            return self.set(bit_target, value)
+        if isinstance(bit_target, slice):
+            return self.set_region(bit_target, value)
+        raise TypeError(f"BitSet indices must be slices or implement __index__, not {type(bit_target).__name__}") 
     
     def __eq__(self, other: object) -> bool:
         if self is other:
@@ -174,19 +184,19 @@ class BitSet:
 
     # region 'public' API/methods/assignment operators
     
-    def flip(self, bit_index: int) -> None:
+    def flip(self, bit_index: SupportsIndex) -> None:
         raise NotImplemented
     
     def flip_region(self, bit_slice: slice) -> None:
         raise NotImplemented
     
-    def set(self, bit_index: int, value: bool = True) -> None:
+    def set(self, bit_index: SupportsIndex, value: SupportsBool = True) -> None:
         raise NotImplemented
     
-    def set_region(self, bit_slice: slice, value: bool = True) -> None:
+    def set_region(self, bit_slice: slice, value: SupportsBool = True) -> None:
         raise NotImplemented
     
-    def clear(self, bit_index: int) -> None:
+    def clear(self, bit_index: SupportsIndex) -> None:
         raise NotImplemented
     
     def clear_region(self, bit_slice: slice) -> None:
@@ -216,22 +226,22 @@ class BitSet:
     def is_empty(self) -> bool:
         return self._words_in_use == 0
 
-    def get(self, bit_index: int) -> bool:
+    def get(self, bit_index: SupportsIndex) -> bool:
         raise NotImplemented
     
     def get_region(self, bit_slice: slice) -> Self:
         raise NotImplemented
     
-    def next_set_bit_index(self, from_index: int = None) -> int | Literal[-1]:
+    def next_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
     
-    def next_clear_bit_index(self, from_index: int = None) -> int | Literal[-1]:
+    def next_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
     
-    def previous_set_bit_index(self, from_index: int = None) -> int | Literal[-1]:
+    def previous_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
     
-    def previous_clear_bit_index(self, from_index: int = None) -> int | Literal[-1]:
+    def previous_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
     
     def intersects(self, other: Self) -> bool:
