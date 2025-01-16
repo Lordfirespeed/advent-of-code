@@ -282,8 +282,20 @@ class BitSet:
         return self._words_in_use == 0
 
     def get(self, bit_index: SupportsIndex) -> bool:
-        raise NotImplemented
-    
+        bit_index = index(bit_index)
+        if bit_index < 0:
+            bit_index += len(self)
+        if bit_index < 0:
+            raise IndexError("BitSet index out of range")
+        
+        self._ensure_invariants()
+        
+        word_index = self._word_index(bit_index)
+        if word_index >= self._words_in_use:
+            return False
+        masked_word = self._words[word_index] & circular_left_shift(1, bit_index, self.bits_per_word)
+        return bool(masked_word != 0)
+
     def get_region(self, bit_slice: slice) -> Self:
         raise NotImplemented
     
