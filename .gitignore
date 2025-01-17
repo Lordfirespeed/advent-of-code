@@ -6,6 +6,9 @@
 ## important Git files
 !.gitignore
 
+## editorconfig
+!.editorconfig
+
 ## pipenv
 !/Pipfile
 !/Pipfile.lock
