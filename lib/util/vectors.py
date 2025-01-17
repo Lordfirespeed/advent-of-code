@@ -2,13 +2,13 @@ from operator import index
 from typing import (
     ClassVar,
     Iterator,
-    Literal, 
-    Self, 
+    Literal,
+    Self,
     Sequence,
-    SupportsIndex, 
-    TypeGuard, 
-    final, 
-    overload, 
+    SupportsIndex,
+    TypeGuard,
+    final,
+    overload,
 )
 
 import numpy as np
@@ -42,7 +42,7 @@ class pos(_vector2, metaclass=classproperty.Meta):
 
     def as_immutable(self) -> Self:
         return self.__class__.immutable(*self)
-    
+
     def as_mutable(self) -> Self:
         return self.__class__.mutable(*self)
 
@@ -63,9 +63,8 @@ class pos(_vector2, metaclass=classproperty.Meta):
 
     @overload
     def __getitem__(self, item: Literal[0, 1]) -> int: ...
-    
     @overload
-    def __getitem__(self, item: tuple[Literal[0,1]]) -> int: ...
+    def __getitem__(self, item: tuple[Literal[0, 1]]) -> int: ...
 
     def __getitem__(self, item):
         if isinstance(item, tuple):
@@ -136,7 +135,6 @@ class pos_range(Sequence[Position]):
 
     @overload
     def __new__(cls, __stop: Position) -> Self: ...
-
     @overload
     def __new__(cls, __start: Position, __stop: Position, __step: int = ...) -> Self: ...
 
@@ -228,8 +226,7 @@ class pos_range(Sequence[Position]):
         return pos_range_iterator(self.stop - self.step, self.start - self.step, -self.step, self.shape())
 
     @overload
-    def __getitem__(self, __key: SupportsIndex) -> Position: ...
-
+    def __getitem__(self, __key: SupportsIndex) -> Position:...
     @overload
     def __getitem__(self, __key: slice) -> Self: ...
 

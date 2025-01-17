@@ -1,5 +1,5 @@
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 from .definitions import problem_test_instances_dir
 from .part_one import PartOneSolver

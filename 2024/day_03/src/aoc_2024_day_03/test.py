@@ -1,5 +1,5 @@
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 from .definitions import problem_test_instances_dir
 from .part_one import PartOneSolver
@@ -28,7 +28,7 @@ class TestPartTwo(unittest.TestCase):
         instance = load_instance("example-01.txt")
         solver = PartTwoSolver(instance)
         self.assertEqual(161, solver.solve())
-        
+
     def test_example_02(self):
         instance = load_instance("example-02.txt")
         solver = PartTwoSolver(instance)
