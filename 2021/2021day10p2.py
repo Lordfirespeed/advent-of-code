@@ -1,5 +1,6 @@
 class ChunkCorrupted(Exception):
     """Raised when chunk is corrupted"""
+
     def __init__(self, illegalCharacter):
         self.illegalCharacter = illegalCharacter
         super(ChunkCorrupted, self).__init__()

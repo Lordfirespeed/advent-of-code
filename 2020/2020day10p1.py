@@ -2,7 +2,7 @@ with open(r"Input\2020day10.txt") as inputfile:
     adapters = [int(n.strip()) for n in inputfile.readlines()]
 
 adapters = sorted(adapters)
-adapters.append(adapters[-1]+3)
+adapters.append(adapters[-1] + 3)
 adapters.insert(0, 0)
 
 pairs_of_adapters = list(zip(adapters[:-1], adapters[1:]))

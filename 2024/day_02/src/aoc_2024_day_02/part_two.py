@@ -24,7 +24,7 @@ class PartTwoSolver:
 
     @classmethod
     def is_safe_with_dampener(cls, report: list[int]) -> bool:
-        return any(cls.is_safe(report[:i] + report[i+1:]) for i in range(len(report)))
+        return any(cls.is_safe(report[:i] + report[i + 1:]) for i in range(len(report)))
 
     def solve(self) -> int:
         return countOf((self.is_safe_with_dampener(report) for report in self.instance.reports), True)

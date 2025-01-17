@@ -4,10 +4,19 @@ paramlengths = {1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4, 99: 1}
 
 
 class IntcodeComputer(object):
-    def __init__(self, name, register, inps=()):
+    def __init__(self, name, register, inps=None):
         global paramlengths
         self.register = register.copy()
-        self.inps = (tuple(inps.copy()) if type(inps) == list else inps) if type(inps) == tuple or type(inps) == list else tuple([inps])
+
+        if isinstance(inps, tuple):
+            self.inps = list(inps)
+        elif isinstance(inps, list):
+            self.inps = inps.copy()
+        elif inps is not None:
+            self.inps = [inps]
+        else:
+            self.inps = []
+
         self.input = self.gen()
         self.outs = []
         self.currindex = 0
@@ -58,7 +67,8 @@ class IntcodeComputer(object):
                 newindex = self.currindex + paramlength
         elif opcode == 7:
             self.register[command[3]] = int(
-                (command[1] if modes[0] else self.register[command[1]]) < (command[2] if modes[1] else self.register[command[2]]))
+                (command[1] if modes[0] else self.register[command[1]]) < (
+                    command[2] if modes[1] else self.register[command[2]]))
         elif opcode == 8:
             self.register[command[3]] = int((command[1] if modes[0] else self.register[command[1]]) == (
                 command[2] if modes[1] else self.register[command[2]]))

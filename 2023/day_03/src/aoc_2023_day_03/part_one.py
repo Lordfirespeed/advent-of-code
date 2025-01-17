@@ -1,5 +1,5 @@
-from typing import Generator, Iterable
 from itertools import chain
+from typing import Generator, Iterable
 
 from util.vectors import Position, pos
 
@@ -62,7 +62,7 @@ class PartOneSolver:
             if not self.instance.schematic[position].isdigit():
                 self.pop_partial_digit()
                 continue
-            
+
             self.positions_to_check = chain(self.positions_to_check, self.adjacent_positions(position))
             self.partial_digit += self.instance.schematic[position]
 

@@ -37,7 +37,10 @@ class PartTwoSolver:
             yield adjacent_position
 
     def consider_asterisk(self, asterisk_position: Position) -> None:
-        digit_neighbor_positions: set[Position] = {neighbor for neighbor in self.adjacent_positions(asterisk_position) if self.instance.schematic[neighbor].isdigit()}
+        positions_adjacent_to_asterisk = self.adjacent_positions(asterisk_position)
+        digit_neighbor_positions: set[Position] = {
+            neighbor for neighbor in positions_adjacent_to_asterisk if self.instance.schematic[neighbor].isdigit()
+        }
         if len(digit_neighbor_positions) == 0:
             return
 

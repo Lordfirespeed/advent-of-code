@@ -1,6 +1,6 @@
-from typing import Self
 from dataclasses import dataclass
 from math import prod as product
+from typing import Self
 
 
 @dataclass

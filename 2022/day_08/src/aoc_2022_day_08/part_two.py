@@ -1,5 +1,6 @@
-import numpy
 from enum import Enum
+
+import numpy
 
 
 class Direction(Enum):
@@ -19,7 +20,7 @@ class Solution:
         blocking_indexes = numpy.empty(heights.shape, int)
         blocking_indexes[0] = 0
         for tree_index, tree_height in enumerate(heights[1:], 1):
-            blocked_by_index = tree_index-1
+            blocked_by_index = tree_index - 1
             while heights[blocked_by_index] < tree_height and blocked_by_index > 0:
                 blocked_by_index = blocking_indexes[blocked_by_index]
             blocking_indexes[tree_index] = blocked_by_index

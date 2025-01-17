@@ -14,8 +14,8 @@ class Solution:
             xMin, xMax = min(xValues), max(xValues)
             yMin, yMax = min(yValues), max(yValues)
 
-            for setX in range(xMin, xMax+1):
-                for setY in range(yMin, yMax+1):
+            for setX in range(xMin, xMax + 1):
+                for setY in range(yMin, yMax + 1):
                     positions[setY][setX] += 1
 
         # find positions with danger > 1
@@ -29,17 +29,25 @@ class Solution:
         return dangerousPositionCount
 
     @staticmethod
-    def make_coordinate_pairs_from_input_lines(inputLines):
+    def make_cardinal_vent_lines_from_input_lines(inputLines):
         stringCoordinates = [line.split(" -> ") for line in inputLines]
-        stringTupleCoordinatePairs = [tuple([tuple(stringCoordinate.split(",")) for stringCoordinate in line]) for line in stringCoordinates]
-        numberTupleCoordinatePairs = [tuple([tuple([int(stringNumber) for stringNumber in stringTupleCoordinate]) for stringTupleCoordinate in line]) for line in stringTupleCoordinatePairs]
+        tupleCoordinatePairs = [
+            tuple(
+                tuple(int(stringNumber) for stringNumber in stringCoordinate.split(","))
+                for stringCoordinate in line
+            )
+            for line in stringCoordinates
+        ]
 
-        fundamentalDirectionVentLines = [(endPoint1, endPoint2) for endPoint1, endPoint2 in numberTupleCoordinatePairs if endPoint1[0] == endPoint2[0] or endPoint1[1] == endPoint2[1]]
+        fundamentalDirectionVentLines = [
+            (endPoint1, endPoint2) for endPoint1, endPoint2 in tupleCoordinatePairs
+            if endPoint1[0] == endPoint2[0] or endPoint1[1] == endPoint2[1]
+        ]
 
         return fundamentalDirectionVentLines
 
     def find_dangerous_areas_of_input_lines(self, inputLines):
-        coordinatePairs = self.make_coordinate_pairs_from_input_lines(inputLines)
+        coordinatePairs = self.make_cardinal_vent_lines_from_input_lines(inputLines)
         return self.find_dangerous_areas_of_coordinate_pairs(coordinatePairs)
 
 

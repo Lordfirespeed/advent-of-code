@@ -1,6 +1,6 @@
-from typing import Self
 from dataclasses import dataclass
 from math import prod as product
+from typing import Self
 
 
 @dataclass
@@ -9,7 +9,9 @@ class Item:
 
     @classmethod
     def from_original_worry(cls, game: "MonkeyInTheMiddle", original_worry: int):
-        levels_wrt_monkeys = {monkey.test_divisible_by: original_worry % monkey.test_divisible_by for index, monkey in game.monkeys.items()}
+        levels_wrt_monkeys = {
+            monkey.test_divisible_by: original_worry % monkey.test_divisible_by for index, monkey in game.monkeys.items()
+        }
         return cls(levels_wrt_monkeys)
 
 

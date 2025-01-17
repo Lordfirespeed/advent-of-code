@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from string import ascii_lowercase
 from typing import Self, overload, ClassVar
+
 from common.vectors import Vector2
 
 
@@ -46,13 +47,16 @@ class MountainRange:
         self.fill_grid(mountain_string)
 
     @overload
-    def __getitem__(self, key: Vector2 | tuple[int, int]) -> MountainPeak: ...
+    def __getitem__(self, key: Vector2 | tuple[int, int]) -> MountainPeak:
+        ...
 
     @overload
-    def __getitem__(self, key: int) -> [MountainPeak]: ...
+    def __getitem__(self, key: int) -> [MountainPeak]:
+        ...
 
     @overload
-    def __getitem__(self, key: slice) -> [[MountainPeak]]: ...
+    def __getitem__(self, key: slice) -> [[MountainPeak]]:
+        ...
 
     def __getitem__(self, key):
         if isinstance(key, Vector2):

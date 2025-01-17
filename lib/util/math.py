@@ -1,17 +1,16 @@
 from math import (
     isqrt as isqrt_floor,
-    prod,
-    sumprod,
+    prod as product,
+    sumprod as sum_product,
 )
-
 
 __all__ = (
     "isqrt_floor",
     "isqrt_ceil",
     "floor_div",
     "ceil_div",
-    "prod",
-    "sumprod",
+    "product",
+    "sum_product",
 )
 
 
@@ -22,7 +21,7 @@ def isqrt_ceil(n: int) -> int:
     return 1 + isqrt_floor(n - 1)
 
 
-def floor_div(a,b):
+def floor_div(a, b):
     return a // b
 
 

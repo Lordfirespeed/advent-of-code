@@ -1,8 +1,9 @@
-from common.vectors import Vector2
-from common.spans import Span, SpanCollection
 import re
 from dataclasses import dataclass, field
 from typing import ClassVar, Self
+
+from common.spans import Span, SpanCollection
+from common.vectors import Vector2
 
 
 @dataclass
@@ -18,7 +19,9 @@ class Sensor:
     def diameter(self) -> int:
         return self.radius * 2 + 1
 
-    sensor_data_pattern: ClassVar[re.Pattern] = re.compile(r"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)")
+    sensor_data_pattern: ClassVar[re.Pattern] = re.compile(
+        r"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)"
+    )
 
     @classmethod
     def from_data(cls, sensor_data: str) -> Self:
@@ -45,7 +48,12 @@ class Solution:
         self.beacon_positions = set([sensor.closest_beacon_position for sensor in self.sensors])
 
     def beacon_positions_on_row(self) -> [int]:
-        return [position.x for position in filter(lambda position: position.y == self.considering_y_coordinate, self.beacon_positions)]
+        def row_filter(position: Vector2) -> bool:
+            return position.y == self.considering_y_coordinate
+
+        return [
+            position.x for position in filter(row_filter, self.beacon_positions)
+        ]
 
     def positions_spanned_on_row(self) -> SpanCollection:
         unsimplified_spans = []

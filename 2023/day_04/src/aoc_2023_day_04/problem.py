@@ -15,7 +15,7 @@ class Card:
         assert card_string.startswith("Card ")
         colon_index = card_string.index(":")
         card_id = int(card_string[5:colon_index])
-        rest = card_string[colon_index+1:].lstrip()
+        rest = card_string[colon_index + 1:].lstrip()
         winning_numbers_string, held_numbers_string = rest.split(" | ")
         winning_numbers = [int(number_string) for number_string in winning_numbers_string.split()]
         held_numbers = [int(number_string) for number_string in held_numbers_string.split()]

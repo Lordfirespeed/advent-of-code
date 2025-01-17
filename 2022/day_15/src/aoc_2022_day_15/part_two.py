@@ -1,6 +1,7 @@
-from common.vectors import Vector2
-from common.spans import Span
 from common.numeric import Infinity, NegativeInfinity
+from common.spans import Span
+from common.vectors import Vector2
+
 from part_one import Solution as OldSolution
 
 

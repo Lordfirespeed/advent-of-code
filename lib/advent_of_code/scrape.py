@@ -43,6 +43,6 @@ def scrape_problem_title(problem_html_soup: BeautifulSoup) -> str:
     title_with_day_number = title_with_decoration_and_day_number.strip("- ")
     try:
         colon_index = title_with_day_number.index(":")
-        return title_with_day_number[colon_index+1:].lstrip()
+        return title_with_day_number[colon_index + 1:].lstrip()
     except ValueError:
         return title_with_day_number

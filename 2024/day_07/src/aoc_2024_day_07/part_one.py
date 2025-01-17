@@ -13,7 +13,7 @@ class Operator(Protocol):
 class Add(Operator):
     def apply(self, a: int, b: int) -> int:
         return a + b
-    
+
     def __repr__(self):
         return "+"
 
@@ -21,7 +21,7 @@ class Add(Operator):
 class Multiply(Operator):
     def apply(self, a: int, b: int) -> int:
         return a * b
-    
+
     def __repr__(self):
         return "*"
 
@@ -52,7 +52,7 @@ def brute_force_operator_assignment(equation: CalibrationEquation) -> OperatorAs
 
 
 def is_possibly_true(equation: CalibrationEquation) -> bool:
-    try: 
+    try:
         brute_force_operator_assignment(equation)
         return True
     except NoSolutionError:

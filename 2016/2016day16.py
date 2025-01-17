@@ -6,14 +6,16 @@ def extend(binstring, disklen):
         returnstring = a + "0" + b
     return returnstring[:disklen]
 
+
 def checksum(binstring):
     length = len(binstring)
     value = ""
     for index in range(0, length, 2):
-        value += str(int(binstring[index] == binstring[index+1]))
+        value += str(int(binstring[index] == binstring[index + 1]))
     if len(value) % 2 == 0:
         value = checksum(value)
     return value
+
 
 inputstring = "10111011111001111"
 disklen = 272

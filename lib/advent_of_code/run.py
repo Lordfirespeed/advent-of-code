@@ -1,11 +1,10 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import aiohttp
 
 from config import config
 from problem_instance_abc import ProblemInstanceABC
-
 from .api import advent_of_code_session, fetch_problem_input
 from .args import AdventOfCodeArgNamespace
 from .scrape import get_problem_title

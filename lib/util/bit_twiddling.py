@@ -64,15 +64,16 @@ def first_set_bit_index(binary: SupportsInt | BytesLike) -> int | Literal[-1]:
         binary = int(binary)
     if type(binary) is not int:
         binary = int.from_bytes(binary, byteorder="big")
-    
+
     if binary == 0:
         return -1
-    
+
     return binary.bit_length() - 1
 
 
 @overload
 def circular_left_shift(value: integer, shift: int | integer, width: int | integer) -> integer: ...
+
 @overload
 def circular_left_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
 
@@ -82,8 +83,10 @@ def circular_left_shift(value, shift, width):
     # https://stackoverflow.com/a/63767548/11045433
     return ((value << shift) % (1 << width)) | (value >> (width - shift))
 
+
 @overload
 def circular_right_shift(value: integer, shift: int | integer, width: int | integer) -> integer: ...
+
 @overload
 def circular_right_shift(value: int, shift: int | integer, width: int | integer) -> int: ...
 

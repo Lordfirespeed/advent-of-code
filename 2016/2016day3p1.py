@@ -9,6 +9,6 @@ for triangle in inputlist:
     c = int(triangle[2])
     if ((a + b) > c and (a + c) > b and (b + c) > a):
         valid.append(list(triangle))
-    
+
 print(len(inputlist))
 print(len(valid))

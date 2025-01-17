@@ -37,7 +37,7 @@ while not complete == allstepids:
                 worker = ["", 0]
             workers[index] = list(worker)
     time += 1
-    workers = [[worker[0], worker[1]-1] if worker[1] != 0 else worker for worker in workers]
+    workers = [[worker[0], worker[1] - 1] if worker[1] != 0 else worker for worker in workers]
     complete.sort()
 
-print(str(time-1))
+print(str(time - 1))

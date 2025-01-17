@@ -1,4 +1,5 @@
 from multiprocessing import Pool
+
 from util.vectors import pos, pos_range
 
 from ..problem import ProblemInstance
@@ -16,7 +17,7 @@ class PartTwoSolver:
             return False
         if add_obstacle_position in self.instance.obstructions:
             return False
-        
+
         guard = Guard(
             room_obstructions={add_obstacle_position} | self.instance.obstructions,
             room_shape=self.instance.initial_room_map.shape,

@@ -14,7 +14,7 @@ while planets not in seenBefore:
     # [print(moon) for moon in planets]
     # print()
     for moonAIndex in range(len(planets)):
-        for moonBIndex in range(moonAIndex+1, len(planets)):
+        for moonBIndex in range(moonAIndex + 1, len(planets)):
             moonA, moonB = planets[moonAIndex], planets[moonBIndex]
             for dimension in ("x", "y", "z"):
                 if moonA[0][dimension] == moonB[0][dimension]:

@@ -4,12 +4,13 @@ def findmostcommon(string):
         instances.append([string.count(character), character])
     return [instance for instance in instances if instance[0] > 0]
 
+
 with open("2016day4input.txt") as inputfile:
     inputlist = [line.strip() for line in inputfile.readlines()]
 
 totalID = 0
 for line in inputlist:
-    checknum = line[line.index("[")+1:-1]
+    checknum = line[line.index("[") + 1:-1]
     chars = line[:line.index("[")]
     ID = chars[-3:]
     chars = chars.replace("-" + ID, "")

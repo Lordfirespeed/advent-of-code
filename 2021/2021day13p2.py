@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+
 class Vector2:
     def __init__(self, x, y):
         self.x = x
@@ -48,9 +49,13 @@ class Vector2:
 class Solution:
     def __init__(self, inputString):
         stringDotPositions, wholeFoldInstructions = inputString.split("\n\n")
-        tupleDotPositions = [tuple([int(number) for number in position.split(",")]) for position in stringDotPositions.split("\n")]
+        tupleDotPositions = [
+            tuple(int(number) for number in position.split(",")) for position in stringDotPositions.split("\n")
+        ]
         self.dotPositions = [Vector2(*tuplePosition) for tuplePosition in tupleDotPositions]
-        usefulPartOfFoldInstructions = [foldInstruction[11:].split("=") for foldInstruction in wholeFoldInstructions.split("\n")]
+        usefulPartOfFoldInstructions = [
+            foldInstruction[11:].split("=") for foldInstruction in wholeFoldInstructions.split("\n")
+        ]
         self.foldInstructions = [(axis, int(positionOnAxis)) for axis, positionOnAxis in usefulPartOfFoldInstructions]
 
     def horizontalFold(self, positionOnAxis):
@@ -87,8 +92,8 @@ class Solution:
             displayCharacters[dotPosition.y][dotPosition.x] = "#"
 
         displayString = ""
-        for y in range(minY, maxY+1):
-            for x in range(minX, maxX+1):
+        for y in range(minY, maxY + 1):
+            for x in range(minX, maxX + 1):
                 displayString += displayCharacters[y][x]
             displayString += "\n"
         return displayString

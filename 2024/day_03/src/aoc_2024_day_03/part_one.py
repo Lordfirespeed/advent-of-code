@@ -5,7 +5,7 @@ from .problem import ProblemInstance
 
 class PartOneSolver:
     mul_instruction_pattern = re.compile('mul\((?P<left>\d{1,3}),(?P<right>\d{1,3})\)')
-    
+
     def __init__(self, instance: ProblemInstance) -> None:
         self.instance = instance
 

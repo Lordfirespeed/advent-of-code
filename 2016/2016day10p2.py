@@ -1,6 +1,6 @@
 with open("2016day10input.txt") as inputfile:
     inputlist = [line.strip() for line in inputfile.readlines()]
-values = [line for line in inputlist if "value" in  line]
+values = [line for line in inputlist if "value" in line]
 gives = [line for line in inputlist if "gives" in line]
 
 bots = {}
@@ -10,14 +10,14 @@ for line in inputlist:
     index = 0
     line += " "
     for index, char in enumerate(line):
-        if line[index:index+3] == "bot":
-            firstspace = line.index(" ", index+2)
-            secondspace = line.index(" ", firstspace+1)
+        if line[index:index + 3] == "bot":
+            firstspace = line.index(" ", index + 2)
+            secondspace = line.index(" ", firstspace + 1)
             index = int(line[firstspace:secondspace])
             bots[index] = []
-        elif line[index:index+6] == "output":
-            firstspace = line.index(" ", index+2)
-            secondspace = line.index(" ", firstspace+1)
+        elif line[index:index + 6] == "output":
+            firstspace = line.index(" ", index + 2)
+            secondspace = line.index(" ", firstspace + 1)
             index = int(line[firstspace:secondspace])
             outputs[index] = []
 
@@ -54,4 +54,3 @@ while rerun:
         else:
             redo.append(command)
     execute = list(redo)
-    

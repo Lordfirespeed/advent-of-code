@@ -1,6 +1,6 @@
-from typing import TypeVar, Self
-from json import loads as json_load_string
 from enum import Enum, auto
+from json import loads as json_load_string
+from typing import TypeVar, Self
 
 Payload = TypeVar("Payload", int, list[int | Self])
 

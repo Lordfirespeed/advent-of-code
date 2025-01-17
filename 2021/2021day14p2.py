@@ -11,7 +11,7 @@ class Solution:
     @staticmethod
     def pairs(polymer):
         pairs = defaultdict(lambda: 0)
-        for pair in [polymer[index:index+2] for index in range(len(polymer)-1)]:
+        for pair in [polymer[index:index + 2] for index in range(len(polymer) - 1)]:
             pairs[pair] += 1
         return pairs
 

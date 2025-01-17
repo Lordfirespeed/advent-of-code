@@ -9,12 +9,14 @@ for index, line in enumerate(inputlines):
     currentposition = line[posindex:line.index(".", posindex)]
     inputdata.append([int(positions), int(currentposition)])
 
+
 def drop(discs, droptime):
     positions = [(disc[1] + droptime + discindex + 1) % disc[0] for discindex, disc in enumerate(discs)]
     if len(set(positions)) == 1 and positions[0] == 0:
         return True
     else:
         return False
+
 
 time = 0
 solved = False

@@ -4,8 +4,8 @@ with open("Input/2019day8input.txt") as inputfile:
 xsize, ysize = 25, 6
 size = xsize * ysize
 
-layers = [[int(n) for n in nums[i:i+size]] for i in range(0, len(nums), size)]
-layers = [[layer[n:n+xsize] for n in range(0, size, xsize)]for layer in layers]
+layers = [[int(n) for n in nums[i:i + size]] for i in range(0, len(nums), size)]
+layers = [[layer[n:n + xsize] for n in range(0, size, xsize)] for layer in layers]
 
 render = [[3 for x in range(xsize)] for y in range(ysize)]
 change = {0: " ", 1: "█", 2: " "}

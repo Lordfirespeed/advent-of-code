@@ -46,7 +46,7 @@ class Vector2:
 class Solution:
     def __init__(self, inputString):
         stringDotPositions, wholeFoldInstructions = inputString.split("\n\n")
-        tupleDotPositions = [tuple([int(number) for number in position.split(",")]) for position in stringDotPositions.split("\n")]
+        tupleDotPositions = [tuple(int(number) for number in position.split(",")) for position in stringDotPositions.split("\n")]
         self.dotPositions = [Vector2(*tuplePosition) for tuplePosition in tupleDotPositions]
         usefulPartOfFoldInstructions = [foldInstruction[11:].split("=") for foldInstruction in wholeFoldInstructions.split("\n")]
         self.foldInstructions = [(axis, int(positionOnAxis)) for axis, positionOnAxis in usefulPartOfFoldInstructions]

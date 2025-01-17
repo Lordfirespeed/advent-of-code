@@ -42,7 +42,7 @@ class Solution:
 
 def batched(a_list: list, batch_size: int) -> list[list]:
     for index in range(0, len(a_list), batch_size):
-        yield a_list[index:index+batch_size]
+        yield a_list[index:index + batch_size]
 
 
 if __name__ == "__main__":

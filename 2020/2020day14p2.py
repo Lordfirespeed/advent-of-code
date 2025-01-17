@@ -1,4 +1,3 @@
-
 from itertools import product
 
 with open(r"Input\2020day14.txt") as inputfile:

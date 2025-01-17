@@ -9,7 +9,7 @@ def comparestrings(stringa, stringb):
 
 
 def generatestrings(string):
-    possiblestrings = [string[:index] + string[index+1:] for index in range(len(string))]
+    possiblestrings = [string[:index] + string[index + 1:] for index in range(len(string))]
     return possiblestrings
 
 
@@ -19,7 +19,7 @@ with open("2018day2input.txt") as inputfile:
 found = False
 for keyindex, key in enumerate(inputlines):
     # For every key in the list
-    for checkkey in (inputlines[:keyindex] + inputlines[keyindex+1:]):
+    for checkkey in (inputlines[:keyindex] + inputlines[keyindex + 1:]):
         # Check it against every checkkey in the list except for itself
         keypossible = generatestrings(key)
         checkkeypossible = generatestrings(checkkey)

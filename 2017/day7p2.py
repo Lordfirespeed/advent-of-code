@@ -12,12 +12,12 @@ def getweight(name):
                 weight = weight.replace(")", "")
                 weight = int(weight)
                 # get the weight of the standalone program and trim parentheses
-                
+
                 if not "->" in line.rstrip():
                     # if the 'program' doesn't have any 'programs' on top of it
                     return weight
                     # return the weight of that standalone program
-                    
+
                 else:
                     # if the 'program' does have 'programs' on top of it
                     stackedprograms = (line.rstrip()[(line.index("-> ") + 3):]).split(", ")
@@ -31,8 +31,10 @@ def getweight(name):
                     return totalweight
                     # return the total weight of the 'program', including stacked 'programs'
 
+
 def checkequal(iterable):
     return len(set(iterable)) <= 1
+
 
 def checkweight(name):
     with open("day7input.txt") as file:
@@ -52,6 +54,7 @@ def checkweight(name):
                 return weightsequal
                 # return the value
 
+
 def findwrong():
     with open("day7input.txt") as file:
         # Open file
@@ -64,7 +67,7 @@ def findwrong():
                 programok = checkweight(programname)
                 if not programok:
                     # if one of the 'program's stacks are incorrect
-                    print("One of '" + programname +  "'s' stacks are incorrect.")
+                    print("One of '" + programname + "'s' stacks are incorrect.")
                     stackedprograms = (line.rstrip()[(line.index("-> ") + 3):]).split(", ")
                     print(stackedprograms)
                     # get the stacked 'programs' and tell the user which 'program' has bad stacks
@@ -73,5 +76,3 @@ def findwrong():
                         stackedweights.append(getweight(program))
                     print(stackedweights)
                     # print the weights of each 'program' relative to the previously printed list
-                    
-                   

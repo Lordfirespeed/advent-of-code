@@ -8,7 +8,7 @@ class Solution:
 
     def find_min_fuel_cost(self, initial_positions):
         self.fuelCosts = []
-        for position in range(min(initial_positions), max(initial_positions)+1):
+        for position in range(min(initial_positions), max(initial_positions) + 1):
             self.fuelCosts.append(self.calculate_fuel_cost(initial_positions, position))
 
         return min(self.fuelCosts)

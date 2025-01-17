@@ -1,5 +1,6 @@
-from numpy import uint16
 from collections import defaultdict
+
+from numpy import uint16
 
 with open(r"day7input.txt") as inputfile:
     inputlines = [line.strip() for line in inputfile]

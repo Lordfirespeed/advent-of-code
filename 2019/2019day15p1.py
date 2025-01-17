@@ -5,11 +5,20 @@ debug = False
 
 
 class IntcodeComputer(object):
-    def __init__(self, name, register, inps=()):
+    def __init__(self, name, register, inps=None):
         global paramlengths
         self.initregister = register.copy()
         self.register = register.copy()
-        self.inps = (list(inps) if type(inps) == tuple else inps.copy()) if type(inps) == tuple or type(inps) == list else [inps]
+
+        if isinstance(inps, tuple):
+            self.inps = list(inps)
+        elif isinstance(inps, list):
+            self.inps = inps.copy()
+        elif inps is not None:
+            self.inps = [inps]
+        else:
+            self.inps = []
+
         self.initinps = self.inps.copy()
         self.inputindex = 0
         self.outs = []
@@ -73,15 +82,26 @@ class IntcodeComputer(object):
                 # print(self.select(command, modes, 2), command, modes)
                 # print(self.relativebase, command[3])
 
-                self.register[command[3] if modes[2] == 0 else (self.relativebase + command[3])] = self.select(command, modes, 1) + self.select(command, modes, 2)
+                destination = command[3]
+                if modes[2] != 0:
+                    destination += self.relativebase
+
+                self.register[destination] = self.select(command, modes, 1) + self.select(command, modes, 2)
             elif opcode == 2:
-                self.register[command[3] if modes[2] == 0 else (self.relativebase + command[3])] = self.select(command, modes, 1) * self.select(command, modes, 2)
+                destination = command[3]
+                if modes[2] != 0:
+                    destination += self.relativebase
+
+                self.register[destination] = self.select(command, modes, 1) * self.select(command, modes, 2)
             elif opcode == 3:
                 try:
                     # print(modes)
                     # print(self.inps)
-                    self.register[command[1] if modes[0] == 0 else (self.relativebase + command[1])] = (taken := self.inps[self.inputindex])
-                    # print("TAKEN", taken)
+                    destination = command[1]
+                    if modes[0] != 0:
+                        destination += self.relativebase
+
+                    self.register[destination] = self.inps[self.inputindex]
                     self.inputindex += 1
                     newindex = self.currindex + paramlength
                 except IndexError:
@@ -104,9 +124,17 @@ class IntcodeComputer(object):
                 else:
                     newindex = self.currindex + paramlength
             elif opcode == 7:
-                self.register[command[3] if modes[2] == 0 else (self.relativebase + command[3])] = int(self.select(command, modes, 1) < self.select(command, modes, 2))
+                destination = command[3]
+                if modes[2] != 0:
+                    destination += self.relativebase
+
+                self.register[destination] = int(self.select(command, modes, 1) < self.select(command, modes, 2))
             elif opcode == 8:
-                self.register[command[3] if modes[2] == 0 else (self.relativebase + command[3])] = int(self.select(command, modes, 1) == self.select(command, modes, 2))
+                destination = command[3]
+                if modes[2] != 0:
+                    destination += self.relativebase
+
+                self.register[destination] = int(self.select(command, modes, 1) == self.select(command, modes, 2))
             elif opcode == 9:
                 self.relativebase += self.select(command, modes, 1)
 
@@ -138,9 +166,9 @@ def displaygrid(grid):
     yvals = grid.keys()
     xvals = [val for yval in yvals for val in grid[yval].keys()]
     minx, maxx, miny, maxy = min(xvals), max(xvals), min(yvals), max(yvals)
-    for yval in range(maxy, miny-1, -1):
+    for yval in range(maxy, miny - 1, -1):
         line = ""
-        for xval in range(minx, maxx+1):
+        for xval in range(minx, maxx + 1):
             try:
                 line += grid[yval][xval]
             except KeyError:

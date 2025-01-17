@@ -42,10 +42,21 @@ class Octopus:
 
 
 class Solution:
-    adjacencyDeltaVectors = [Vector2(1, 1), Vector2(1, 0), Vector2(1, -1), Vector2(0, -1), Vector2(-1, -1), Vector2(-1, 0), Vector2(-1, 1), Vector2(0, 1)]
+    adjacencyDeltaVectors = [
+        Vector2(1, 1),
+        Vector2(1, 0),
+        Vector2(1, -1),
+        Vector2(0, -1),
+        Vector2(-1, -1),
+        Vector2(-1, 0),
+        Vector2(-1, 1),
+        Vector2(0, 1),
+    ]
 
     def __init__(self, inputLines):
-        self.octopusCavern = [[Octopus(int(digit), Vector2(xPos, yPos)) for xPos, digit in enumerate(line)] for yPos, line in enumerate(inputLines)]
+        self.octopusCavern = [
+            [Octopus(int(digit), Vector2(xPos, yPos)) for xPos, digit in enumerate(line)] for yPos, line in enumerate(inputLines)
+        ]
         self.totalFlashes = 0
         self.steps = 0
         self.xSize = 10

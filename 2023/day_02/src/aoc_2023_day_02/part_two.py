@@ -18,7 +18,7 @@ class PartTwoSolver:
             if blue < handful.blue:
                 blue = handful.blue
         return Handful(red=red, green=green, blue=blue)
-    
+
     @classmethod
     def handful_power_set(cls, handful: Handful) -> int:
         return handful.red * handful.green * handful.blue

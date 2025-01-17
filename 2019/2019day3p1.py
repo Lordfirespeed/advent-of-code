@@ -16,10 +16,14 @@ def getlinepoints(line):
             newpos[1] -= int(move[1:])
         else:
             newpos[1] += int(move[1:])
-        #print(newpos)
+        # print(newpos)
         ychange = -1 if newpos[0] < curr[0] else 1
         xchange = -1 if newpos[1] < curr[1] else 1
-        points += [(y, x) for y in range(curr[0], newpos[0]+ychange, ychange) for x in range(curr[1], newpos[1]+xchange, xchange)]
+        points += [
+            (y, x)
+            for y in range(curr[0], newpos[0] + ychange, ychange)
+            for x in range(curr[1], newpos[1] + xchange, xchange)
+        ]
         curr = newpos
     return set(points)
 

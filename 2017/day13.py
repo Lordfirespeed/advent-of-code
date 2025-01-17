@@ -9,6 +9,7 @@ with open("day13input.txt") as inputfile:
         if depth > highestdepth:
             highestdepth = depth
 
+
 def partone():
     severity = 0
     for depth in range((highestdepth + 1)):
@@ -20,6 +21,7 @@ def partone():
             wallnotfound = True
 
     print(severity)
+
 
 def parttwo():
     solution = False
@@ -39,4 +41,3 @@ def parttwo():
             break
 
         startat += 1
-    

@@ -8,6 +8,7 @@ with open("day18input.txt") as inputfile:
 # set up core lists and retrieve input from file
 
 from string import ascii_lowercase
+
 values = ("0" + (25 * ",0")).split(",")
 values = [int(value) for value in values]
 # to map an alphabetic register name to the value list:
@@ -15,9 +16,11 @@ values = [int(value) for value in values]
 
 currentinstruction = 0
 
+
 def snd(register):
     # play sound (append to list) of frequency equal to value of register
     playedsounds.append(values[ascii_lowercase.index(register)])
+
 
 def set(register, value):
     # set register to value
@@ -26,12 +29,14 @@ def set(register, value):
     except ValueError:
         values[ascii_lowercase.index(register)] = values[ascii_lowercase.index(value)]
 
+
 def add(register, adder):
     # add adder to register value
     try:
         values[ascii_lowercase.index(register)] += int(adder)
     except ValueError:
         values[ascii_lowercase.index(register)] += values[ascii_lowercase.index(adder)]
+
 
 def mul(register, factor):
     # multiply register value by factor]
@@ -40,6 +45,7 @@ def mul(register, factor):
     except ValueError:
         values[ascii_lowercase.index(register)] *= values[ascii_lowercase.index(factor)]
 
+
 def mod(register, divisor):
     # set register to its value modulo the divisor
     try:
@@ -47,16 +53,19 @@ def mod(register, divisor):
     except ValueError:
         values[ascii_lowercase.index(register)] %= values[ascii_lowercase.index(divisor)]
 
+
 def rcv(register):
     # recover last sound frequency, if register value is not zero
     if values[ascii_lowercase.index(register)] != 0:
         recovered.append(playedsounds[-1])
+
 
 def jgz(register, value):
     # jumps instructions by value if register's value is greater than zero
     global currentinstruction
     if values[ascii_lowercase.index(register)] > 0:
         currentinstruction += int(value)
+
 
 while currentinstruction < len(inputlist):
     commandlist = inputlist[currentinstruction]
@@ -72,7 +81,3 @@ while currentinstruction < len(inputlist):
     if recovered:
         break
 print(recovered)
-
-
-
-    

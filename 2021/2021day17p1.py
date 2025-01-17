@@ -1,5 +1,6 @@
-from sympy import symbols, solve
 from math import sqrt, ceil, floor
+
+from sympy import symbols
 
 x, y = symbols("x y")
 
@@ -20,7 +21,7 @@ class Solution:
     def find_terminating_initial_x_values(self):
         minInitialX = ceil(self.inverse_triangular_number(self.xRange[0]))
         maxInitialX = floor(self.inverse_triangular_number(self.xRange[1]))
-        return range(minInitialX, maxInitialX+1)
+        return range(minInitialX, maxInitialX + 1)
 
     def find_(self):
         pass
@@ -29,7 +30,6 @@ class Solution:
         xStarts = self.find_terminating_initial_x_values()
         for yEnd in range(*self.yRange):
             yStartEq = (yEnd + (x * (x + 1) / 2)) - (y * (x + 1))
-
 
 
 if __name__ == "__main__":

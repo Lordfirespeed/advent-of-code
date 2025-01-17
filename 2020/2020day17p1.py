@@ -25,7 +25,24 @@ class Conway_3D:
         self.iteration = 0
 
     def __repr__(self):
-        arrangement_string = "\n".join([" " + "  ".join(["".join(xy_grid[x_index]) for z, xy_grid in sorted(list(self.grid.items()))]) for x_index in range(len(self.grid[0]))])
+        z_ordered_grid_items = list(self.grid.items())
+        z_ordered_grid_items.sort()
+
+        indent = " "
+        z_slice_separator = "  "
+
+        def present_row_of_z_slice(z_slice: dict[int, str], x_index: int) -> str:
+            return "".join(z_slice[x_index])
+
+        def present_row_of_all_z_slices(x_index: int) -> str:
+            z_slice_rows = (present_row_of_z_slice(z_slice, x_index) for z_index, z_slice in z_ordered_grid_items)
+            return indent + z_slice_separator.join(z_slice_rows)
+
+        def present_all_z_slices() -> str:
+            grid_x_size = len(self.grid[0])
+            return "\n".join(present_row_of_all_z_slices(x_index) for x_index in range(grid_x_size))
+
+        arrangement_string = present_all_z_slices()
         return f"Iteration: {self.iteration}\n{arrangement_string}"
 
     def get_active_cells(self):
@@ -67,18 +84,20 @@ class Conway_3D:
         grid_ranges = self.get_active_cells_range()
         self.grid = {z: xy_grid for z, xy_grid in self.grid.items() if grid_ranges["Z"][0] <= z <= grid_ranges["Z"][1]}
 
-        old_x_size, old_y_size = grid_ranges["X"][1] - grid_ranges["X"][0] + 1, grid_ranges["Y"][1] - grid_ranges["Y"][0] + 1
+        old_x_size, old_y_size = grid_ranges["X"][1] - grid_ranges["X"][0] + 1, grid_ranges["Y"][1] - grid_ranges["Y"][
+            0] + 1
 
         blank_x_row = ["."] * (old_x_size + 2)
         for z, xy_grid in self.grid.items():
-            self.grid[z] = [["."] + x_row[grid_ranges["X"][0]:grid_ranges["X"][1]+1] + ["."] for x_row in xy_grid[grid_ranges["Y"][0]:grid_ranges["Y"][1]+1]]
+            self.grid[z] = [["."] + x_row[grid_ranges["X"][0]:grid_ranges["X"][1] + 1] + ["."] for x_row in
+                            xy_grid[grid_ranges["Y"][0]:grid_ranges["Y"][1] + 1]]
 
             self.grid[z].insert(0, blank_x_row.copy())
             self.grid[z].append(blank_x_row.copy())
 
-        blank_xy_grid = [["." for x in range(old_x_size+2)] for y in range(old_y_size+2)]
-        self.grid[grid_ranges["Z"][0]-1] = [line.copy() for line in blank_xy_grid]
-        self.grid[grid_ranges["Z"][1]+1] = [line.copy() for line in blank_xy_grid]
+        blank_xy_grid = [["." for x in range(old_x_size + 2)] for y in range(old_y_size + 2)]
+        self.grid[grid_ranges["Z"][0] - 1] = [line.copy() for line in blank_xy_grid]
+        self.grid[grid_ranges["Z"][1] + 1] = [line.copy() for line in blank_xy_grid]
 
     def simulate(self):
         self.correct_grid_size()

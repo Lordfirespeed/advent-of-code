@@ -13,6 +13,7 @@ def checkcancel(string, index):
             break
     return valid
 
+
 def cleanup():
     with open("day9input.txt") as inputfile:
         inputstuff = inputfile.readlines()[0].rstrip()
@@ -32,21 +33,19 @@ def cleanup():
                 removed.append("*")
         else:
             removed.append("*")
-        
+
         if character == "!":
             index += 1
         elif character == "<" and not garbage:
             garbage = True
 
-            
         if not garbage:
-                outputlist.append(character)
+            outputlist.append(character)
         if character == ">" and garbage:
-            if inputstuff[index+1] == ",":
+            if inputstuff[index + 1] == ",":
                 index += 1
             garbage = False
-        
-            
+
         index += 1
 
     print(str(removedamount) + " characters of garbage removed.")
@@ -67,10 +66,3 @@ def score():
             depth -= 1
         index += 1
     return totalscore
-            
-        
-
-
-    
-
-    

@@ -18,13 +18,33 @@ def parse(command, register, currindex):
     operator = str(command[0])
     opcode = int(operator[-2:])
     paramlength = paramlengths[opcode]
-    modes = [int(("0"*paramlength + operator[:-2])[-i]) for i in range(1, paramlength)]
+    modes = [int(("0" * paramlength + operator[:-2])[-i]) for i in range(1, paramlength)]
     # print(modes)
     newindex = currindex
     if opcode == 1:
-        register[command[3]] = (command[1] if modes[0] else register[command[1]]) + (command[2] if modes[1] else register[command[2]])
+        destination = command[3]
+
+        first_operand = command[1]
+        if modes[0]:
+            first_operand = register[first_operand]
+
+        second_operand = command[2]
+        if modes[0]:
+            second_operand = register[second_operand]
+
+        register[destination] = first_operand + second_operand
     elif opcode == 2:
-        register[command[3]] = (command[1] if modes[0] else register[command[1]]) * (command[2] if modes[1] else register[command[2]])
+        destination = command[3]
+
+        first_operand = command[1]
+        if modes[0]:
+            first_operand = register[first_operand]
+
+        second_operand = command[2]
+        if modes[0]:
+            second_operand = register[second_operand]
+
+        register[destination] = first_operand * second_operand
     elif opcode == 3:
         register[command[1]] = inp()
     elif opcode == 4:
@@ -42,9 +62,29 @@ def parse(command, register, currindex):
         else:
             newindex = currindex + paramlength
     elif opcode == 7:
-        register[command[3]] = int((command[1] if modes[0] else register[command[1]]) < (command[2] if modes[1] else register[command[2]]))
+        destination = command[3]
+
+        first_operand = command[1]
+        if modes[0]:
+            first_operand = register[first_operand]
+
+        second_operand = command[2]
+        if modes[0]:
+            second_operand = register[second_operand]
+
+        register[destination] = int(first_operand < second_operand)
     elif opcode == 8:
-        register[command[3]] = int((command[1] if modes[0] else register[command[1]]) == (command[2] if modes[1] else register[command[2]]))
+        destination = command[3]
+
+        first_operand = command[1]
+        if modes[0]:
+            first_operand = register[first_operand]
+
+        second_operand = command[2]
+        if modes[0]:
+            second_operand = register[second_operand]
+
+        register[destination] = int(first_operand == second_operand)
 
     return currindex + paramlength if opcode not in (5, 6) else newindex
 
@@ -60,5 +100,5 @@ while not done:
             done = True
         else:
             paramlength = paramlengths[opcode]
-            command = nums[currindex:currindex+paramlength]
+            command = nums[currindex:currindex + paramlength]
             currindex = parse(command, nums, currindex)

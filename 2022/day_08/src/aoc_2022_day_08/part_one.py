@@ -1,5 +1,4 @@
 import numpy
-from numpy.typing import ArrayLike
 
 
 class Solution:
@@ -27,11 +26,11 @@ class Solution:
         self.consider_sequence(self.tree_heights[index, ::-1], self.visible_trees[index, ::-1])
 
     def consider_all_columns(self):
-        for column_index in range(1, self.tree_heights.shape[0]-1):
+        for column_index in range(1, self.tree_heights.shape[0] - 1):
             self.consider_column(column_index)
 
     def consider_all_rows(self):
-        for row_index in range(1, self.tree_heights.shape[1]-1):
+        for row_index in range(1, self.tree_heights.shape[1] - 1):
             self.consider_row(row_index)
 
     def set_corners_visible(self):

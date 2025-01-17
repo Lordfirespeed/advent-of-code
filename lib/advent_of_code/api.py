@@ -1,5 +1,6 @@
-import aiohttp
 from urllib.parse import urljoin
+
+import aiohttp
 
 api_host = "https://adventofcode.com"
 

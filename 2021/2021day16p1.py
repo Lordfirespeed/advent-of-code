@@ -111,7 +111,8 @@ class Solution:
     def get_packet_version_numbers_sum(packet):
         sumOfSubPacketVersionSums = 0
         if packet.subPackets:
-            sumOfSubPacketVersionSums = sum([Solution.get_packet_version_numbers_sum(subPacket) for subPacket in packet.subPackets])
+            subPacketVersionSums = (Solution.get_packet_version_numbers_sum(subPacket) for subPacket in packet.subPackets)
+            sumOfSubPacketVersionSums = sum(subPacketVersionSums)
 
         return packet.version + sumOfSubPacketVersionSums
 

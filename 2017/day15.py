@@ -3,14 +3,18 @@ genBstart = 879
 genAfactor = 16807
 genBfactor = 48271
 
+
 def value(prevnum, factor):
     return ((prevnum * factor) % 2147483647)
 
+
 genAprev = genAstart
 genBprev = genBstart
-totalcorrect = 0
+
 
 def partone():
+    totalcorrect = 0
+
     for i in range(40000000):
         global genAprev
         global genBprev
@@ -25,6 +29,7 @@ def partone():
 
     return totalcorrect
 
+
 def parttwo():
     global genAprev
     global genBprev
@@ -36,14 +41,14 @@ def parttwo():
             genAlist.append(bin(genAval)[-16:])
         genAprev = genAval
     print("Generated A values.")
-        
+
     while (len(genBlist) < 5000000):
         genBval = value(genBprev, genBfactor)
         if not genBval % 8:
             genBlist.append(bin(genBval)[-16:])
         genBprev = genBval
     print("Generated B values.")
-    
+
     print("Commencing numcheck.")
     totalcorrect = 0
     for index, thing in enumerate(genAlist, 1):
@@ -52,11 +57,3 @@ def parttwo():
         if not ((index) % 500000):
             print("Completed " + str(index) + " of 5000000 operations.")
     return totalcorrect
-            
-        
-    
-    
-    
-    
-
-

@@ -14,7 +14,7 @@ for line in range(128):
         binhash = binhash + binchar
     totalfilled += binhash.count("1")
     array.append(list(str(i) for i in binhash))
-    #print(totalfilled)
+    # print(totalfilled)
 
 output = False
 if output:
@@ -23,7 +23,7 @@ if output:
         for line in array:
             outputfile.write("".join(line) + "\n")
         outputfile.write("\n0\n\n")
-                    
+
 regions = 0
 for lineindex, line in enumerate(array, 0):
     for charindex, char in enumerate(line, 0):
@@ -36,14 +36,14 @@ for lineindex, line in enumerate(array, 0):
                         onecoords.append(checkloc)
                 except IndexError:
                     indexerror = 1
-                    
+
                 try:
                     checkloc = [(oneloc[0] - 1), oneloc[1]]
                     if array[checkloc[0]][checkloc[1]] == "1" and not checkloc in onecoords and not checkloc[0] == -1:
                         onecoords.append(checkloc)
                 except IndexError:
                     indexerror = 1
-                    
+
                 try:
                     checkloc = [oneloc[0], (oneloc[1] + 1)]
                     if array[checkloc[0]][checkloc[1]] == "1" and not checkloc in onecoords:
@@ -57,7 +57,7 @@ for lineindex, line in enumerate(array, 0):
                         onecoords.append(checkloc)
                 except IndexError:
                     indexerror = 1
-            
+
             for location in onecoords:
                 array[location[0]][location[1]] = "X"
             regions += 1

@@ -26,4 +26,3 @@ if __name__ == "__main__":
     solver = Solution()
     result = solver.simulate(inputNums, 80)
     print(f"There are {result} fish after 80 cycles.")
-

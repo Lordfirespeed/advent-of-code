@@ -5,14 +5,20 @@ with open(r"Input\2020day19.txt") as inputfile:
 
 blank_line_index = inputlines.index("")
 inputrules = inputlines[:blank_line_index]
-inputmessages = inputlines[blank_line_index+1:]
+inputmessages = inputlines[blank_line_index + 1:]
 
 resolved_rule_patterns = {}
 
 rule_colon_indexes = [rule.index(":") for rule in inputrules]
 
-raw_rules = [(int(rule[:colon_index]), [match_option.strip().split(" ") for match_option in rule[colon_index+2:].split("|")]) for rule, colon_index in zip(inputrules, rule_colon_indexes)]
-raw_rules = {rule_index: ([[int(n) for n in match_option] for match_option in rule] if rule[0][0][0] != "\"" else rule) for rule_index, rule in raw_rules}
+raw_rules_list = [
+    (int(rule[:colon_index]), [match_option.strip().split(" ") for match_option in rule[colon_index + 2:].split("|")])
+    for rule, colon_index in zip(inputrules, rule_colon_indexes)
+]
+raw_rules = {
+    rule_index: ([[int(n) for n in match_option] for match_option in rule] if rule[0][0][0] != "\"" else rule)
+    for rule_index, rule in raw_rules_list
+}
 
 total_rules = len(raw_rules)
 
@@ -25,7 +31,10 @@ while len(resolved_rule_patterns) != total_rules:
         elif set([n for match_option in rule for n in match_option]).issubset(set(resolved_rule_patterns.keys())):
             if rule == 8:
                 resolved_rule_patterns[8] = "(\\8)"
-            pattern = "|".join(["".join([resolved_rule_patterns[rule_index] for rule_index in match_option]) for match_option in rule])
+            pattern = "|".join(
+                "".join(resolved_rule_patterns[rule_index] for rule_index in match_option)
+                for match_option in rule
+            )
             if len(rule) > 1:
                 pattern = "(?:" + pattern + ")"
             resolved_rule_patterns[rule_index] = pattern

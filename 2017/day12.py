@@ -7,7 +7,8 @@ with open("day12input.txt") as fileinput:
         communicates = [int(thing) for thing in communicates]
         inputdict[citizen] = communicates
 
-#inputdict = {0:[2], 1:[1], 2:[0, 3, 4], 3:[2, 4], 4:[2, 3, 6], 5:[6], 6:[4, 5]}
+
+# inputdict = {0:[2], 1:[1], 2:[0, 3, 4], 3:[2, 4], 4:[2, 3, 6], 5:[6], 6:[4, 5]}
 
 def partone():
     talkstozero = inputdict[0]
@@ -17,6 +18,7 @@ def partone():
                 talkstozero.append(contact)
 
     return len(talkstozero)
+
 
 def parttwo():
     checkdict = inputdict
@@ -34,7 +36,5 @@ def parttwo():
             groupindex += 1
             for person in talksto:
                 checkedpeople.append(person)
-                
+
     return len(groups)
-            
-            

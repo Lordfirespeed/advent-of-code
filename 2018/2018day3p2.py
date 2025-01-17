@@ -29,6 +29,6 @@ for index, claim in enumerate(inputlines):
 
 overlaps = [squareinch for yrow in fabric for squareinch in yrow if len(squareinch) > 1]
 overlappingindexes = set([claimindex for squareinch in overlaps for claimindex in squareinch])
-allindexes = set(range(1, len(inputlines)+1))
+allindexes = set(range(1, len(inputlines) + 1))
 safeindex = list((allindexes - overlappingindexes))[0]
 print("ID of claim with no overlaps: " + str(safeindex))

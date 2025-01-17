@@ -10,8 +10,8 @@ class Solution:
         self.currentPolymer = list(self.initialPolymer)
 
     def execute_single_insertion_step(self):
-        for positionIndex in range(len(self.currentPolymer)-1, 0, -1):
-            pair = "".join(self.currentPolymer[positionIndex-1:positionIndex+1])
+        for positionIndex in range(len(self.currentPolymer) - 1, 0, -1):
+            pair = "".join(self.currentPolymer[positionIndex - 1:positionIndex + 1])
             try:
                 toInsert = self.pairInsertionRules[pair]
                 self.currentPolymer.insert(positionIndex, toInsert)

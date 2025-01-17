@@ -27,7 +27,7 @@ class AntennaGroup:
                 cursor -= position_delta
                 if cursor not in bounds:
                     break
-            
+
             cursor = second_antenna.position.as_mutable()
             while True:
                 positions.add(cursor.as_immutable())
@@ -59,7 +59,9 @@ class PartTwoSolver:
                 group = set()
                 mutable_groups[character] = group
             group.add(Antenna(character, map_pos.as_immutable()))
-        self._antenna_groups = {frequency: AntennaGroup(frozenset(antennas)) for frequency, antennas in mutable_groups.items()}
+        self._antenna_groups = {
+            frequency: AntennaGroup(frozenset(antennas)) for frequency, antennas in mutable_groups.items()
+        }
 
     def solve(self) -> int:
         self.discover_antennas()
@@ -69,4 +71,3 @@ class PartTwoSolver:
             antinode_positions |= group.antinode_positions(map_bounds)
 
         return len(antinode_positions)
-

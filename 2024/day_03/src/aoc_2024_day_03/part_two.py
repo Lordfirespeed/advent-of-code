@@ -21,19 +21,23 @@ class PartTwoSolver:
                 cursor = do_instruction_match.end()
                 mul_instructions_enabled = True
                 continue
-            
+
             do_not_instruction_match = self.do_not_instruction_pattern.match(self.instance.memory, cursor)
             if do_not_instruction_match is not None:
                 cursor = do_not_instruction_match.end()
                 mul_instructions_enabled = False
                 continue
-            
+
             mul_instruction_match = self.mul_instruction_pattern.match(self.instance.memory, cursor)
             if mul_instruction_match is not None:
                 cursor = mul_instruction_match.end()
-                if mul_instructions_enabled: result += int(mul_instruction_match.group("left")) * int(mul_instruction_match.group("right"))
+                if not mul_instructions_enabled:
+                    continue
+                left_operand = int(mul_instruction_match.group("left"))
+                right_operand = int(mul_instruction_match.group("right"))
+                result += left_operand * right_operand
                 continue
-            
+
             cursor += 1
-                
+
         return result

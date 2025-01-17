@@ -44,7 +44,11 @@ def validate_field(field: str, value: str):
 valid_passports = []
 
 for passport in passport_dicts:
-    if set(passport.keys()).issuperset(required_fields) and all([validate_field(field, value) for field, value in passport.items()]):
-        valid_passports.append(passport)
+    if not set(passport.keys()).issuperset(required_fields):
+        continue
+    fields_are_valid = (validate_field(field, value) for field, value in passport.items())
+    if not all(fields_are_valid):
+        continue
+    valid_passports.append(passport)
 
 print(f"Valid passports: {len(valid_passports)}/{len(passports_raw)}")

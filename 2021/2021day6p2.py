@@ -9,7 +9,7 @@ class Solution:
         for cycleIndex in range(cycles):
             numNewFish = self.fish[0]
             for fishTimer in range(1, 9):
-                self.fish[fishTimer-1] = self.fish[fishTimer]
+                self.fish[fishTimer - 1] = self.fish[fishTimer]
             self.fish[8] = numNewFish
             self.fish[6] += numNewFish
 
@@ -24,4 +24,3 @@ if __name__ == "__main__":
     solver = Solution()
     result = solver.simulate(inputNums, cycles)
     print(f"There are {result} fish after {cycles} cycles.")
-

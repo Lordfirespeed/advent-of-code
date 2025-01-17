@@ -3,7 +3,7 @@ with open(r"Input\2020day5.txt") as inputfile:
 
 
 def interpolate(num1, num2):
-    return int((num1+num2)/2)
+    return int((num1 + num2) / 2)
 
 
 def reduce(curr_range: tuple, chars: str):

@@ -1,11 +1,9 @@
-from math import prod as product
-
 with open(r"Input\2020day13.txt") as inputfile:
     input_data = [line.strip() for line in inputfile.readlines()]
 
 bus_IDs = [int(bus_id) if bus_id != "x" else "x" for bus_id in input_data[1].split(",")]
 target_offsets = {index: bus_id for index, bus_id in enumerate(bus_IDs) if bus_id != "x"}
-remainders = [(bus_id, bus_id-index if index != 0 else 0) for index, bus_id in target_offsets.items()]
+remainders = [(bus_id, bus_id - index if index != 0 else 0) for index, bus_id in target_offsets.items()]
 
 
 def extended_euclid(a, b):
@@ -25,7 +23,6 @@ def chinese_remainder(pairs):
     n_series, r_series = [list(series) for series in list(zip(*pairs))]
 
     while len(r_series) != 1:
-
         # temp1 will contain the new value
         # of A. which is calculated according
         # to the equation m1' * m1 * x0 + m0'

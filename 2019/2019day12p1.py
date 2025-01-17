@@ -13,7 +13,7 @@ while time < targetTime:
     # [print(moon) for moon in planets]
     # print()
     for moonAIndex in range(len(planets)):
-        for moonBIndex in range(moonAIndex+1, len(planets)):
+        for moonBIndex in range(moonAIndex + 1, len(planets)):
             moonA, moonB = planets[moonAIndex], planets[moonBIndex]
             for dimension in ("x", "y", "z"):
                 if moonA[0][dimension] == moonB[0][dimension]:
@@ -29,5 +29,7 @@ while time < targetTime:
             moon[0][dimension] += moon[1][dimension]
     time += 1
 
-energy = sum([sum([abs(v) for v in pos.values()]) * sum([abs(v) for v in velocity.values()]) for pos, velocity in planets])
+energy = sum(
+    (sum(abs(v) for v in pos.values()) * sum(abs(v) for v in velocity.values()) for pos, velocity in planets)
+)
 print(energy)

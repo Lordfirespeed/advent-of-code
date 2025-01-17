@@ -1,5 +1,6 @@
-from part_one import PacketParser, OrderState, Solution, Payload
 from math import prod as product
+
+from part_one import PacketParser, OrderState, Solution, Payload
 
 
 class PartTwoSolution(Solution):

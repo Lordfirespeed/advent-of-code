@@ -36,7 +36,7 @@ class _GuardTurnIterator(Iterator[pos]):
             if self.is_blocked():
                 self.turn_right()
                 return self.location.copy()
-            
+
             self.step_forward()
 
 
@@ -46,7 +46,7 @@ class Guard:
     room_shape: pos
     location: pos = field()
     facing: pos = field(default_factory=lambda: pos(-1, 0))
-    
+
     def _turn_positions(self) -> _GuardTurnIterator:
         return _GuardTurnIterator(
             self.room_obstructions,

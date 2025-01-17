@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Union, Optional
 from functools import cached_property
+from typing import Union, Optional
 
 
 @dataclass
@@ -61,6 +62,7 @@ FileTreeTypes = Union[File, Directory]
 class FileTree:
     def __init__(self):
         self.root = Directory("")
+
 
 class Solution:
     total_device_space = 70_000_000

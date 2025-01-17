@@ -1,5 +1,6 @@
 class Solution:
     target_length = 4
+
     def __init__(self, datastream: str) -> None:
         self.datastream = datastream
 

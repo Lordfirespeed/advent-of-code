@@ -13,6 +13,7 @@ def getdimensions(string):
            "height": int(height)}
     return dim
 
+
 with open("2018day3input.txt") as inputfile:
     inputlines = [line.strip() for line in inputfile.readlines()]
 

@@ -11,18 +11,18 @@ for generation in range(1, 21):
         del current[min(current)]
     while current[max(current)] == ".":
         del current[max(current)]
-    [exec("current[i]='.'") for i in range(min(current)-5, min(current))]
-    [exec("current[i]='.'") for i in range(max(current)+1, max(current)+6)]
+    [exec("current[i]='.'") for i in range(min(current) - 5, min(current))]
+    [exec("current[i]='.'") for i in range(max(current) + 1, max(current) + 6)]
     new = dict(current)
-    for index in range(min(current)+2, len(current)-2):
+    for index in range(min(current) + 2, len(current) - 2):
         try:
-            new[index] = rules["".join([current[i] for i in range(index-2, index+3)])]
+            new[index] = rules["".join([current[i] for i in range(index - 2, index + 3)])]
         except KeyError:
             new[index] = "."
 
     current = dict(new)
-    print(str(generation)+": " + "".join([current[i] for i in range(min(current), max(current)+1)]))
+    print(str(generation) + ": " + "".join([current[i] for i in range(min(current), max(current) + 1)]))
 
 end = dict(current)
-result = sum(i for i in range(min(end), max(end)+1) if end[i] == "#")
+result = sum(i for i in range(min(end), max(end) + 1) if end[i] == "#")
 print(result)

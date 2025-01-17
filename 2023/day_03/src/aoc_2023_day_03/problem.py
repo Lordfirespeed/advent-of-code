@@ -17,7 +17,7 @@ class Schematic(list[str]):
             assert all(isinstance(value, str) for value in iterable)
         super().__init__(*args, **kwargs)
         reduce(assert_equal_length, self)
-    
+
     @property
     def width(self):
         if len(self) == 0:
@@ -44,20 +44,20 @@ class Schematic(list[str]):
     def __getitem__(self, item):
         if isinstance(item, pos):
             assert item.shape == (2,)
-            y,x = item
+            y, x = item
             return super().__getitem__(y).__getitem__(x)
         return super().__getitem__(item)
-    
+
     def __str__(self) -> str:
         return "\n".join(self)
-    
+
     def __repr__(self) -> str:
         return f"Schematic<{self.height} x {self.width}>"
 
 
 class ProblemInstance(ProblemInstanceABC):
     schematic: Schematic
-    
+
     def parse_plaintext(self) -> None:
         lines = self.input_plaintext.splitlines()
         self.schematic = Schematic(lines)

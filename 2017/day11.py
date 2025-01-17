@@ -7,35 +7,42 @@ def initturtle():
     turtle.ht()
     turtle.color("lime")
 
+
 def n():
     turtle.seth(0)
     turtle.forward(movedist)
     turtle.dot(3)
+
 
 def ne():
     turtle.seth(60)
     turtle.forward(movedist)
     turtle.dot(3)
 
+
 def se():
     turtle.seth(120)
     turtle.forward(movedist)
     turtle.dot(3)
+
 
 def s():
     turtle.seth(180)
     turtle.forward(movedist)
     turtle.dot(3)
 
+
 def sw():
     turtle.seth(240)
     turtle.forward(movedist)
     turtle.dot(3)
 
+
 def nw():
     turtle.seth(300)
     turtle.forward(movedist)
     turtle.dot(3)
+
 
 def simplify():
     with open("day11input.txt") as file:
@@ -49,7 +56,7 @@ def simplify():
     swamount = inputlist.count("sw")
     nwamount = inputlist.count("nw")
     seamount = inputlist.count("se")
-    
+
     if namount > samount:
         for index in range(namount - samount):
             outputlist.append("n")
@@ -70,7 +77,7 @@ def simplify():
     else:
         for index in range(seamount - nwamount):
             outputlist.append("se")
-    
+
     inputlist = outputlist
     outputlist = []
 
@@ -81,5 +88,3 @@ def simplify():
     seamount += samount
     neamount -= samount
     print(str(seamount + neamount))
-
-    

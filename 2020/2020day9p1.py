@@ -13,9 +13,11 @@ final_number = None
 for number in inputnums[preamble_length:]:
     if number in available_sums:
         curr_previous.pop(0)
-        available_sums = available_sums[preamble_length-1:]
+        available_sums = available_sums[preamble_length - 1:]
         for index, other in enumerate(curr_previous):
-            available_sums.insert(sum([preamble_length-2-r for r in range(index+1)])+index, number+other)  # did some maths for this
+            available_sums.insert(
+                sum(preamble_length - 2 - r for r in range(index + 1)) + index, number + other
+            )  # did some maths for this
             # a preamble of len 25: first number -> 24 sums, second number -> 23 sums etc.
             # as we remove number index 0, we remove the first 24 sums from the available_sums
             # then, we insert numbers to the respective regions for each lower number

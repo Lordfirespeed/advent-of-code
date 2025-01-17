@@ -10,9 +10,9 @@ def get_ranges_from_string(string):
 your_ticket_index = inputlines.index("your ticket:")
 nearby_tickets_index = inputlines.index("nearby tickets:")
 
-rules = inputlines[0:your_ticket_index-1]
-your_ticket = inputlines[your_ticket_index+1]
-nearby_tickets = inputlines[nearby_tickets_index+1:]
+rules = inputlines[0:your_ticket_index - 1]
+your_ticket = inputlines[your_ticket_index + 1]
+nearby_tickets = inputlines[nearby_tickets_index + 1:]
 
 rules = [rule.split(": ") for rule in rules]
 rules = {rule[0]: get_ranges_from_string(rule[1]) for rule in rules}

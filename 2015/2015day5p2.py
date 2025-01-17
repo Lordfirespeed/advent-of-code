@@ -3,13 +3,13 @@ with open("day5input.txt") as inputfile:
 
 
 def checkdoublepairs(string):
-    doubles = [string[index] + string[index+1] for index in range(len(string)-1)]
+    doubles = [string[index] + string[index + 1] for index in range(len(string) - 1)]
     for doubleindex, doublechar in enumerate(doubles):
         for checkindex, checkdouble in enumerate(doubles):
-            if abs(doubleindex-checkindex) <= 1:
+            if abs(doubleindex - checkindex) <= 1:
                 pass
             elif doublechar == checkdouble:
-                 return doublechar
+                return doublechar
     return False
 
 
@@ -17,7 +17,7 @@ def repeatgapchar(string):
     if len(string) < 3:
         return False
     for index, character in enumerate(string[:-2]):
-        if character == string[index+2]:
+        if character == string[index + 2]:
             return character
     return False
 

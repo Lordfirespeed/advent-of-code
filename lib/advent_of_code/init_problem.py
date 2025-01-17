@@ -19,7 +19,7 @@ class ProblemTemplateContext(TypedDict):
 
 
 async def init_problem(args: AdventOfCodeArgNamespace) -> None:
-    context: ProblemTemplateContext = { 
+    context: ProblemTemplateContext = {
         "PROBLEM_YEAR": f"{args.problem_year:04}",
         "PROBLEM_DAY": f"{args.problem_day:02}",
     }
@@ -33,5 +33,5 @@ async def init_problem(args: AdventOfCodeArgNamespace) -> None:
     async with advent_of_code_session(advent_of_code_session_token) as session:
         title = await get_problem_title(args, session)
         print(f"--- {args.problem_year} Day {args.problem_day}: {title} ---")
-    
+
     print(f"Briefing: https://adventofcode.com/{args.problem_year}/day/{args.problem_day}")

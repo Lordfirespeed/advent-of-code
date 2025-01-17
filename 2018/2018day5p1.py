@@ -11,9 +11,9 @@ mapdict = dict([[mappartA[letterindex], mappartB[letterindex]] for letterindex i
 runnoedit = False
 while not runnoedit:
     runnoedit = True
-    for index in range(0, len(inputstring)-1):
-        if inputstring[index] == mapdict[inputstring[index+1]]:
-            inputstring = inputstring[:index] + inputstring[index+2:]
+    for index in range(0, len(inputstring) - 1):
+        if inputstring[index] == mapdict[inputstring[index + 1]]:
+            inputstring = inputstring[:index] + inputstring[index + 2:]
             runnoedit = False
             break
 

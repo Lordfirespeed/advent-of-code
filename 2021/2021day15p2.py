@@ -65,7 +65,7 @@ class Solution:
 
     def find_path_of_lowest_risk(self):
         start = self.grid.node(0, 0)
-        end = self.grid.node(self.grid.width-1, self.grid.height-1)
+        end = self.grid.node(self.grid.width - 1, self.grid.height - 1)
         path, runs = self.finder.find_path(start, end, self.grid)
         return path
 

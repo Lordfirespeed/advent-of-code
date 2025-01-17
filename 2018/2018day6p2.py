@@ -5,10 +5,10 @@ def manhdist(a, b):
 def compute(coords, addrange=0):
     xvals, yvals = zip(*coords)
     minx, maxx, miny, maxy = min(xvals) - addrange, max(xvals) + addrange, min(yvals) - addrange, max(yvals) + addrange
-    grid = dict([(y, dict([(x, {}) for x in range(minx, maxx+1)])) for y in range(miny, maxy+1)])
+    grid = {y: {x :{} for x in range(minx, maxx + 1)} for y in range(miny, maxy + 1)}
 
-    for y in range(miny, maxy+1):
-        for x in range(minx, maxx+1):
+    for y in range(miny, maxy + 1):
+        for x in range(minx, maxx + 1):
             for index, point in enumerate(coords):
                 dist = manhdist((x, y), point)
                 try:
@@ -17,10 +17,10 @@ def compute(coords, addrange=0):
                     grid[y][x][dist] = []
                 grid[y][x][dist].append(index)
 
-    totals = dict([(y, {}) for y in range(miny, maxy+1)])
+    totals = {y: {} for y in range(miny, maxy + 1)}
 
-    for y in range(miny, maxy+1):
-        for x in range(minx, maxx+1):
+    for y in range(miny, maxy + 1):
+        for x in range(minx, maxx + 1):
             total = 0
             for dist in grid[y][x].keys():
                 total += dist * len(grid[y][x][dist])

@@ -1,16 +1,19 @@
 import hashlib
 
+
 def triplechar(string):
-    for index in range(0, len(string)-2):
-        if string[index] == string[index+1] == string[index+2]:
+    for index in range(0, len(string) - 2):
+        if string[index] == string[index + 1] == string[index + 2]:
             return string[index]
     return False
 
+
 def quinchar(string):
-    for index in range(0, len(string)-4):
-        if string[index] == string[index+1] == string[index+2] == string[index+3] == string[index+4]:
+    for index in range(0, len(string) - 4):
+        if string[index] == string[index + 1] == string[index + 2] == string[index + 3] == string[index + 4]:
             return string[index]
     return False
+
 
 def md5hash(string):
     hashed = string
@@ -19,6 +22,7 @@ def md5hash(string):
         newhash.update(hashed.encode())
         hashed = newhash.hexdigest().lower()
     return hashed
+
 
 inputstring = "qzyelonm"
 hashes = []
@@ -41,8 +45,8 @@ while len(keys) < 64:
                 quin = True
                 break
         if quin:
-            keys.append([int(index-1001), (thousandindex)])
-            print("Found key, index " + str(index-1001) + ".")
+            keys.append([int(index - 1001), (thousandindex)])
+            print("Found key, index " + str(index - 1001) + ".")
     del hashes[0]
     hashes.append(md5hash(inputstring + str(index)))
     index += 1

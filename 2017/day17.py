@@ -26,4 +26,3 @@ def parttwo(stepnum):
             print("Completed " + str(insertnum) + " of 50000000 insertions.")
 
     print(buffer[1])
-

@@ -18,10 +18,10 @@ class Conways_Seats:
         if x < 0:
             x = len(self.arrangement) + x
         seats = []
-        for check_y in range(y-1, y+2):
+        for check_y in range(y - 1, y + 2):
             if 0 <= check_y < len(self.arrangement):
                 row = self.arrangement[check_y]
-                for check_x in range(x-1, x+2):
+                for check_x in range(x - 1, x + 2):
                     if 0 <= check_x < len(row):
                         if not (check_x == x and check_y == y):
                             seats.append(row[check_x])

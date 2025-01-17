@@ -26,7 +26,7 @@ class _GuardPositionIterator(Iterator[pos]):
     room_shape: pos
     location: pos = field()
     facing: pos = field(default_factory=lambda: pos(-1, 0))
-    
+
     def __post_init__(self):
         self.location = self.location.as_mutable()
 
@@ -38,7 +38,7 @@ class _GuardPositionIterator(Iterator[pos]):
 
     def turn_right(self) -> None:
         self.facing = self.facing.rotate_clockwise()
-    
+
     def step_forward(self) -> None:
         self.location += self.facing
 

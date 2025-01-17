@@ -3,7 +3,7 @@ with open(r"Input\2020day5.txt") as inputfile:
 
 
 def interpolate(num1, num2):
-    return int((num1+num2)/2)
+    return int((num1 + num2) / 2)
 
 
 def reduce(curr_range: tuple, chars: str):
@@ -32,7 +32,7 @@ for seat in passes:
     column = reduce((0, 7), seat[7:])
     seat_ids.append(seat_id(row, column))
 
-all_seat_ids = range(min(seat_ids), max(seat_ids)+1)
+all_seat_ids = range(min(seat_ids), max(seat_ids) + 1)
 missing_seat_ids = set(all_seat_ids) - set(seat_ids)
 
 print(f"Your seat ID: {missing_seat_ids.pop()}")

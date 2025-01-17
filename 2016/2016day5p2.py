@@ -11,6 +11,6 @@ while "_" in key:
         validpos = [str(index) for index, char in enumerate(key) if char == "_"]
         pos = hashed[5]
         if pos in validpos:
-            key = key[:int(pos)] + hashed[6] + key[int(pos)+1:]
+            key = key[:int(pos)] + hashed[6] + key[int(pos) + 1:]
             print(key)
     index += 1

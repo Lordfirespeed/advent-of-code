@@ -69,9 +69,9 @@ class SnailfishNumber:
         if depth >= 4 and type(self.leftElement) == int and type(self.rightElement) == int:
             self.explode()
             return True
-        elif type(self.leftElement) == SnailfishNumber and self.leftElement.potentially_explode(depth+1):
+        elif type(self.leftElement) == SnailfishNumber and self.leftElement.potentially_explode(depth + 1):
             return True
-        elif type(self.rightElement) == SnailfishNumber and self.rightElement.potentially_explode(depth+1):
+        elif type(self.rightElement) == SnailfishNumber and self.rightElement.potentially_explode(depth + 1):
             return True
         else:
             return False
@@ -147,7 +147,8 @@ class Solution:
             return int(snailfishNumberString)
 
         splitIndex = Solution.find_snailfish_number_string_top_depth_comma(snailfishNumberString)
-        leftElementString, rightElementString = snailfishNumberString[1:splitIndex], snailfishNumberString[splitIndex+1:-1]
+        leftElementString = snailfishNumberString[1:splitIndex]
+        rightElementString = snailfishNumberString[splitIndex + 1:-1]
         leftElement = Solution.create_snailfish_number_object_from_string(leftElementString)
         rightElement = Solution.create_snailfish_number_object_from_string(rightElementString)
 

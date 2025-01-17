@@ -1,4 +1,5 @@
 from math import ceil, log10
+
 debug = False
 
 
@@ -74,7 +75,12 @@ def makemax(ore, molecule, reactions, spareMolecules={}):
     for powersTenIndex in range(len(powersTen)):
         while cost <= currOre:
             currOre, currSpareMolecules = currOre - cost, newSpareMolecules.copy()
-            cost, newSpareMolecules = getbasecost(molecule, powersTen[powersTenIndex], reactions, currSpareMolecules.copy())
+            cost, newSpareMolecules = getbasecost(
+                molecule,
+                powersTen[powersTenIndex],
+                reactions,
+                currSpareMolecules.copy(),
+            )
             made += powersTen[powersTenIndex]
         newSpareMolecules = currSpareMolecules.copy()
         cost = 0
@@ -84,9 +90,24 @@ def makemax(ore, molecule, reactions, spareMolecules={}):
 
 
 with open("Input/2019day14input.txt") as inputfile:
-    reactions = [[[tuple(molecule.split(" ")) for molecule in molecules.split(", ")] for molecules in line.strip().split(" => ")] for line in inputfile.readlines()]
-reactions = [[dict([(molecule, int(number)) for number, molecule in molecules]) for molecules in reaction] for reaction in reactions]
-reactions = dict([(list(product.keys())[0], (list(product.values())[0], reactants)) for reactants, product in reactions])
+    reactions = [
+        [
+            [tuple(molecule.split(" ")) for molecule in molecules.split(", ")]
+            for molecules in line.strip().split(" => ")
+        ]
+        for line in inputfile.readlines()
+    ]
+reactions = [
+    [
+        dict([(molecule, int(number)) for number, molecule in molecules])
+        for molecules in reaction
+    ]
+    for reaction in reactions
+]
+reactions = {
+    list(product.keys())[0]: (list(product.values())[0], reactants)
+    for reactants, product in reactions
+}
 
 print(ans := getbasecost("FUEL", 1, reactions), {"VRPVC": 0, "BHXH": 0})
 print(ans2 := makemax(1_000_000_000_000, "FUEL", reactions))

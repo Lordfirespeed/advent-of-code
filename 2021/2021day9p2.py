@@ -43,7 +43,9 @@ class Solution:
     neighborDeltas = [Vector2(0, 1), Vector2(0, -1), Vector2(1, 0), Vector2(-1, 0)]
 
     def __init__(self, inputLines):
-        self.numbers = [[CaveHeightPoint(digit, Vector2(xIndex, yIndex)) for xIndex, digit in enumerate(line)] for yIndex, line in enumerate(inputLines)]
+        self.numbers = [
+            [CaveHeightPoint(digit, Vector2(xIndex, yIndex)) for xIndex, digit in enumerate(line)] for yIndex, line in enumerate(inputLines)
+        ]
         self.ySize = len(self.numbers)
         self.xSize = len(self.numbers[0])
 

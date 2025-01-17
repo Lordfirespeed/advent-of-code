@@ -39,4 +39,3 @@ for y, row in enumerate(grid):
             numasteroids[(x, y)] = findasteroids(x, y)
 
 print(max([len(canSee) for canSee in numasteroids.values()]))
-

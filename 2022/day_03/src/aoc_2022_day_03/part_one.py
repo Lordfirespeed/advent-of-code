@@ -31,7 +31,6 @@ class Solution:
 
         raise ValueError
 
-
     def priority_sum(self):
         return sum([self.score_item(backpack.item_in_both_compartments()) for backpack in self.backpacks])
 

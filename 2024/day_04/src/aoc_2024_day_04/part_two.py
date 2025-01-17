@@ -22,7 +22,11 @@ class PartTwoSolver:
         self.target_count = 0
 
     def is_in_bounds(self, position: pos) -> bool:
-        return 0 <= position[0] < self.instance.word_search.height and 0 <= position[1] < self.instance.word_search.width
+        if not (0 <= position[0] < self.instance.word_search.height):
+            return False
+        if not (0 <= position[1] < self.instance.word_search.width):
+            return False
+        return True
 
     def characters_along(self, positions: Iterable[pos]) -> Iterable[str]:
         return (self.instance.word_search[position] for position in positions)

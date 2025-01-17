@@ -24,8 +24,8 @@ class Solution:
         xDeltaDirection = 1 if xDelta >= 0 else -1
         yDeltaDirection = 1 if yDelta >= 0 else -1
 
-        xValues = range(xStart, xEnd+xDeltaDirection, xDeltaDirection)
-        yValues = range(yStart, yEnd+yDeltaDirection, yDeltaDirection)
+        xValues = range(xStart, xEnd + xDeltaDirection, xDeltaDirection)
+        yValues = range(yStart, yEnd + yDeltaDirection, yDeltaDirection)
 
         for xSet, ySet in zip(xValues, yValues):
             self.positions[ySet][xSet] += 1
@@ -54,10 +54,15 @@ class Solution:
     @staticmethod
     def make_coordinate_pairs_from_input_lines(inputLines):
         stringCoordinates = [line.split(" -> ") for line in inputLines]
-        stringTupleCoordinatePairs = [tuple([tuple(stringCoordinate.split(",")) for stringCoordinate in line]) for line in stringCoordinates]
-        numberTupleCoordinatePairs = [tuple([tuple([int(stringNumber) for stringNumber in stringTupleCoordinate]) for stringTupleCoordinate in line]) for line in stringTupleCoordinatePairs]
+        tupleCoordinatePairs = [
+            tuple(
+                tuple(int(stringNumber) for stringNumber in stringCoordinate.split(","))
+                for stringCoordinate in line
+            )
+            for line in stringCoordinates
+        ]
 
-        return numberTupleCoordinatePairs
+        return tupleCoordinatePairs
 
     def find_dangerous_areas_of_input_lines(self, inputLines):
         coordinatePairs = self.make_coordinate_pairs_from_input_lines(inputLines)

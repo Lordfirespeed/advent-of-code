@@ -29,7 +29,7 @@ class Multiply(Operator):
 class Concatenate(Operator):
     def apply(self, a: int, b: int) -> int:
         return int(str(a) + str(b))
-    
+
     def __repr__(self):
         return "||"
 

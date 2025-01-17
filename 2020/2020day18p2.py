@@ -13,7 +13,7 @@ def eval_expr(expr):
         if char == "(":
             end_bracket = brackets.pop(-1)
             if len(brackets) == 0:
-                replaced_expr = replaced_expr[:index] + str(eval_expr(expr[index+1:end_bracket])) + replaced_expr[end_bracket+1:]
+                replaced_expr = replaced_expr[:index] + str(eval_expr(expr[index + 1:end_bracket])) + replaced_expr[end_bracket + 1:]
 
     operands_and_operators = replaced_expr.split(" ")
     operands = [int(number) for index, number in enumerate(operands_and_operators) if index % 2 == 0]
@@ -21,7 +21,7 @@ def eval_expr(expr):
 
     for index, operator in list(enumerate(operators))[::-1]:
         if operator == "+":
-            operands[index] += operands.pop(index+1)
+            operands[index] += operands.pop(index + 1)
 
     return prod(operands)
 

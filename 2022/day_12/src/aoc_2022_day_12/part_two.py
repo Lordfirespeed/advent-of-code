@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Self, ClassVar
-from common.vectors import Vector2
+
 from part_one import MountainRange, MountainPeak
 
 

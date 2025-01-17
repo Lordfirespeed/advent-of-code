@@ -16,7 +16,7 @@ findintegers = re.compile(r"\d+")
 with open("2018day4input.txt") as inputfile:
     inputlines = [line.strip() for line in inputfile.readlines()]
 
-inputdata = [[gettimestamp(line), line[line.index("]")+2:]] for line in inputlines]
+inputdata = [[gettimestamp(line), line[line.index("]") + 2:]] for line in inputlines]
 inputdata = [[int("".join(data[0]))] + data for data in inputdata]
 inputdata.sort()
 

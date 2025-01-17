@@ -1,6 +1,6 @@
 # Copyright (c) 2025 Lordfirespeed
 # Lordfirespeed licenses the contents of this file to you under the terms of the GPL-2.0-only license.
-# 
+#
 # The contents of this file are largely based on
 # https://github.com/openjdk/jdk/blob/f64f22b360f68df68ebb875bd0ef08ba61702952/src/java.base/share/classes/java/util/BitSet.java
 # Copyright (c) 1995, 2024, Oracle and/or its affiliates. All rights reserved.
@@ -13,18 +13,17 @@ from typing import (
     Literal,
     Self,
     SupportsBytes,
-    SupportsIndex, 
+    SupportsIndex,
     overload,
 )
 
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
 from util.bit_twiddling import (
-    first_set_bit_index, 
-    circular_left_shift
+    first_set_bit_index,
+    circular_left_shift,
 )
-from util.protocols import SupportsCopy, SupportsBool
-
+from util.protocols import SupportsBool
 
 type BytesLike = Iterable[SupportsIndex] | SupportsBytes
 type NDVector[T] = ndarray[int, dtype[T]]
@@ -51,7 +50,7 @@ class BitSet:
 
     address_bits_per_word: ClassVar[int] = 6
     """
-    BitSets are packed into arrays of "words." Words are (NumPy) 64-bit unsigned integers, so a 6-bit integer is 
+    BitSets are packed into arrays of "words." Words are (NumPy) 64-bit unsigned integers, so a 6-bit integer is
     the minimum required to uniquely index a position in a word.
     """
     bits_per_word: ClassVar[int] = 1 << address_bits_per_word
@@ -83,7 +82,7 @@ class BitSet:
 
         # double the capacity, or use the requested capacity
         new_word_count = max(2 * len(self._words), word_count)
-        # missing entries are initialised to zero when an NDArray is enlarged 
+        # missing entries are initialised to zero when an NDArray is enlarged
         # https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html#numpy.ndarray.resize
         self._words = self._words.resize(new_word_count)
 
@@ -126,7 +125,8 @@ class BitSet:
     def __init__(self, bit_length: int = None) -> None:
         self._size_is_sticky = bit_length is not None
         """
-        Whether the BitSet word-size is user-specified; if so, BitSet should avoid trimming 
+        Whether the BitSet word-size is user-specified; if so, BitSet should be less inclined to trim to fit,
+        as it trusts the user has pre-allocated space intentionally.
         """
         bit_length = bit_length or self.bits_per_word
         word_length = self._word_index(bit_length - 1) + 1
@@ -135,18 +135,19 @@ class BitSet:
 
     def __bytes__(self) -> bytes:
         return self.to_bytes()
-    
+
     def __bool__(self) -> bool:
         return not self.is_empty()
-    
+
     def __copy__(self) -> Self:
         return self.copy()
-    
+
     def __len__(self) -> int:
         return self.bits_length()
-    
+
     @overload
     def __getitem__(self, bit_index: SupportsIndex) -> bool: ...
+
     @overload
     def __getitem__(self, bit_slice: slice) -> Self: ...
 
@@ -159,32 +160,33 @@ class BitSet:
 
     @overload
     def __setitem__(self, bit_index: SupportsIndex, value: SupportsBool) -> None: ...
+
     @overload
     def __setitem__(self, bit_slice: slice, value: SupportsBool) -> None: ...
-    
+
     def __setitem__(self, bit_target, value) -> None:
         if isinstance(bit_target, SupportsIndex):
             return self.set(bit_target, value)
         if isinstance(bit_target, slice):
             return self.set_region(bit_target, value)
-        raise TypeError(f"BitSet indices must be slices or implement __index__, not {type(bit_target).__name__}") 
-    
+        raise TypeError(f"BitSet indices must be slices or implement __index__, not {type(bit_target).__name__}")
+
     def __eq__(self, other: object) -> bool:
         if self is other:
             return True
         if not isinstance(other, BitSet):
             return False
-        
+
         self._ensure_invariants()
         other._ensure_invariants()
-        
+
         if self._words_in_use != other._words_in_use:
             return False
-        
+
         for self_word, other_word in zip(self._words, other._words):
             if self_word != other_word:
                 return False
-        
+
         return True
 
     # endregion
@@ -196,14 +198,14 @@ class BitSet:
 
     def to_byte_array(self) -> bytearray:
         raise NotImplemented
-    
+
     def copy(self) -> Self:
         raise NotImplemented
 
     # endregion
 
     # region 'public' API/methods/assignment operators
-    
+
     def flip(self, bit_index: SupportsIndex) -> None:
         bit_index = index(bit_index)
         if bit_index < 0:
@@ -214,13 +216,13 @@ class BitSet:
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
         self._words[word_index] ^= circular_left_shift(uint64(1), bit_index, self.bits_per_word)
-        
+
         self._recalculate_words_in_use()
         self._ensure_invariants()
-    
+
     def flip_region(self, bit_slice: slice) -> None:
         raise NotImplemented
-    
+
     def set(self, bit_index: SupportsIndex, value: SupportsBool = True) -> None:
         if value is False:
             return self.clear(bit_index)
@@ -230,14 +232,14 @@ class BitSet:
             bit_index += len(self)
         if bit_index < 0:
             raise IndexError("BitSet index out of range")
-        
+
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
         self._words[word_index] |= circular_left_shift(uint64(1), bit_index, self.bits_per_word)
-    
+
     def set_region(self, bit_slice: slice, value: SupportsBool = True) -> None:
         raise NotImplemented
-    
+
     def clear(self, bit_index: SupportsIndex) -> None:
         bit_index = index(bit_index)
         if bit_index < 0:
@@ -250,7 +252,7 @@ class BitSet:
             return
 
         self._words[word_index] &= ~circular_left_shift(uint64(1), bit_index, self.bits_per_word)
-        
+
         self._recalculate_words_in_use()
         self._ensure_invariants()
 
@@ -263,7 +265,7 @@ class BitSet:
         self._words_in_use = 0
 
     # endregion
-    
+
     # region 'public' API/methods/retrieval operators
 
     def bits_length(self) -> int:
@@ -273,14 +275,14 @@ class BitSet:
         """
         if self._words_in_use == 0:
             return 0
-        
+
         last_word_length = first_set_bit_index(self._words[self._words_in_use - 1]) + 1
         return (self.bits_per_word * (self._words_in_use - 1)) + last_word_length
 
     def bits_capacity(self) -> int:
         """
-        Returns the number of bits of space in use by this BitSet. 
-        The maximum element in a BitSet is at index (size - 1). 
+        Returns the number of bits of space in use by this BitSet.
+        The maximum element in a BitSet is at index (size - 1).
         """
         return self.bits_per_word * len(self._words)
 
@@ -293,9 +295,9 @@ class BitSet:
             bit_index += len(self)
         if bit_index < 0:
             raise IndexError("BitSet index out of range")
-        
+
         self._ensure_invariants()
-        
+
         word_index = self._word_index(bit_index)
         if word_index >= self._words_in_use:
             return False
@@ -304,62 +306,62 @@ class BitSet:
 
     def get_region(self, bit_slice: slice) -> Self:
         raise NotImplemented
-    
+
     def next_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
-    
+
     def next_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
-    
+
     def previous_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
-    
+
     def previous_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
-    
+
     def intersects(self, other: Self) -> bool:
         """
         Returns true if this BitSet has any set bits in common with the specified BitSet.
         Otherwise, returns False.
         """
         raise NotImplemented
-    
+
     def cardinality(self) -> int:
         """
         Returns the number of set bits in this BitSet.
         """
         raise NotImplemented
-    
+
     # endregion
-    
+
     # region 'public' API/methods/binary operators
-    
+
     def and_update(self, other: Self) -> None:
         raise NotImplemented
-    
+
     def or_update(self, other: Self) -> None:
         raise NotImplemented
-    
+
     def xor_update(self, other: Self) -> None:
         raise NotImplemented
-    
+
     def difference_update(self, other: Self) -> None:
         raise NotImplemented
-    
+
     def symmetric_difference_update(self, other: Self) -> None:
         raise NotImplemented
-    
+
     # endregion
-    
+
     # region 'public' API/methods/iterators
-    
+
     def boolean_values(self) -> Iterable[bool]:
         raise NotImplemented
-    
+
     def set_bit_indices(self) -> Iterable[int]:
         raise NotImplemented
-    
+
     def clear_bit_indices(self) -> Iterable[int]:
         raise NotImplemented
-    
+
     # endregion

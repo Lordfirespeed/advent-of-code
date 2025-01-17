@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
-from jinja2.exceptions import TemplateSyntaxError, UndefinedError
 
 from .environment import create_env
 from .has_binary_contents import has_binary_contents
@@ -100,16 +99,16 @@ def use_template_dir(
     instance_subdir = instance_dir.absolute()
     if instance_subdir.exists():
         raise Exception(f"Instance (path) already exists: {template_dir} -> {instance_subdir}")
-    
+
     env = create_env()
     with work_in(template_dir):
         env.loader = FileSystemLoader(["."])
-        
+
         for root, dir_names, file_names in os.walk("."):
             for dir_name in dir_names:
                 template_subdir_relative = Path(root, dir_name)
                 render_directory(instance_dir, template_subdir_relative, context, env)
-            
+
             for file_name in file_names:
                 instance_file_relative = Path(root, file_name)
                 render_file(instance_dir, instance_file_relative, context, env)
@@ -128,10 +127,9 @@ def use_template(
     template = template.absolute()
     if not template.exists():
         raise Exception(f"Template doesn't exist: {template}")
-    
+
     if template.is_file():
         use_template_file(instance, template, context)
-    
+
     if template.is_dir():
         use_template_dir(instance, template, context)
-        

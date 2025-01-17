@@ -25,13 +25,13 @@ def generaterooms(location):
     addtotovisit = []
     unlockeddoors = doors(location[2])
     if unlockeddoors[0]:
-        addtotovisit.append([int(location[0]), int(location[1])-1, (str(location[2]) + "U")])
+        addtotovisit.append([int(location[0]), int(location[1]) - 1, (str(location[2]) + "U")])
     if unlockeddoors[1]:
-        addtotovisit.append([int(location[0]), int(location[1])+1, (str(location[2]) + "D")])
+        addtotovisit.append([int(location[0]), int(location[1]) + 1, (str(location[2]) + "D")])
     if unlockeddoors[2]:
-        addtotovisit.append([int(location[0])-1, int(location[1]), (str(location[2]) + "L")])
+        addtotovisit.append([int(location[0]) - 1, int(location[1]), (str(location[2]) + "L")])
     if unlockeddoors[3]:
-        addtotovisit.append([int(location[0])+1, int(location[1]), (str(location[2]) + "R")])
+        addtotovisit.append([int(location[0]) + 1, int(location[1]), (str(location[2]) + "R")])
 
     invalid = []
     for index, coordinates in enumerate([location[:2] for location in addtotovisit]):
@@ -41,7 +41,6 @@ def generaterooms(location):
         del addtotovisit[index]
 
     return addtotovisit
-
 
 
 location = [0, 0, ""]

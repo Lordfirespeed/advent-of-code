@@ -66,7 +66,7 @@ class CorruptedFourDigitDisplay:
                 possibleSegmentIndexes = possibleSegmentIndexes.union(self.mapNumbertoSegmentIndexes[possibleDigit])
 
             for character in signal:
-                self.charactersPossibleSegmentIndexes[character] = self.charactersPossibleSegmentIndexes[character].intersection(possibleSegmentIndexes)
+                self.charactersPossibleSegmentIndexes[character].intersection_update(possibleSegmentIndexes)
 
     def reduceCharacterPossibleSegmentIndexesByDepletedCharacters(self):
         if self.depletedSegmentIndexes == set(range(7)):

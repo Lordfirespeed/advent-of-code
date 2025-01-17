@@ -1,9 +1,9 @@
 from operator import index
 from typing import (
     Iterator,
-    Self, 
-    Sequence, 
-    SupportsIndex, 
+    Self,
+    Sequence,
+    SupportsIndex,
     overload,
 )
 
@@ -52,7 +52,7 @@ class span(Sequence[int]):
         if __value in self:
             return 1
         return 0
-    
+
     @overload
     def index(self, __value: int) -> int: ...
 
@@ -62,12 +62,12 @@ class span(Sequence[int]):
     def index(self, __value):
         if isinstance(__value, int):
             return self.__index_of_int(__value)
-        
+
         if isinstance(__value, span):
             return self.__index_of_span(__value)
-        
+
         raise TypeError("can only search for objects of type int, span in span")
-    
+
     def __index_of_int(self, __value: int) -> int:
         if not isinstance(__value, int):
             raise TypeError(f"{__value.__class__.__name__} object cannot be interpreted as an int")
@@ -75,7 +75,7 @@ class span(Sequence[int]):
         if __value < self.start or self.__stop <= __value:
             raise ValueError(f"{__value} is not in span")
         return __value - self.__start
-    
+
     def __index_of_span(self, __value: Self) -> slice:
         if __value.start < self.start or __value.stop > self.stop:
             raise ValueError(f"{__value} is not enclosed by span")
@@ -121,14 +121,14 @@ class span(Sequence[int]):
 
         if isinstance(__key, SupportsIndex):
             return self[index(__key)]
-        
+
         if isinstance(__key, slice):
             return self.__get_slice_item(__key)
 
         raise TypeError(f"span indices must be integers or slices, not {__key.__class__.__name__}")
 
     def __get_int_item(self, __key: int) -> int:
-        self_length = len(self)        
+        self_length = len(self)
         if __key < 0:
             negative_index = self_length + __key
             if negative_index < 0:
@@ -143,7 +143,7 @@ class span(Sequence[int]):
         if __key.step is not None:
             raise TypeError("span can only be indexed by slice with step None")
         start, stop, step = __key.indices(len(self))
-        
+
         return self.__class__(self.start + start, min(self.start + stop, self.stop))
 
     def __repr__(self) -> str:
@@ -158,13 +158,13 @@ class span(Sequence[int]):
         if self.start <= other.start:
             return self._ordered_intersection(self, other)
         return self._ordered_intersection(other, self)
-    
+
     @classmethod
     def _ordered_difference(cls, first: Self, second: Self) -> tuple[Self, Self]:
         first_span = cls(first.start, second.start)
         second_span = cls(second.stop, first.stop)
         return first_span, second_span
-    
+
     def difference(self, other: Self) -> tuple[Self, Self]:
         first_span = self.__class__(self.start, other.start)
         second_span = self.__class__(other.stop, self.stop)

@@ -25,13 +25,13 @@ class Handful:
 class Game:
     game_id: int
     history: list[Handful]
-    
+
     @classmethod
     def from_string(cls, game_string: str) -> Self:
         assert game_string.startswith("Game ")
         colon_index = game_string.index(":")
         game_id = int(game_string[5:colon_index])
-        handful_strings = game_string[colon_index+2:].split("; ")
+        handful_strings = game_string[colon_index + 2:].split("; ")
         handfuls = [Handful.from_string(handful_string) for handful_string in handful_strings]
         return cls(game_id, handfuls)
 

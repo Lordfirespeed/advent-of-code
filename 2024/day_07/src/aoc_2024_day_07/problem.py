@@ -8,7 +8,7 @@ from problem_instance_abc import ProblemInstanceABC
 class CalibrationEquation:
     result: int
     operands: tuple[int, ...]
-    
+
     @classmethod
     def from_plaintext(cls, plaintext: str) -> Self:
         parts = plaintext.split(": ")
@@ -21,6 +21,6 @@ class CalibrationEquation:
 
 class ProblemInstance(ProblemInstanceABC):
     equations: tuple[CalibrationEquation, ...]
-    
+
     def parse_plaintext(self) -> None:
         self.equations = tuple(CalibrationEquation.from_plaintext(line) for line in self.input_plaintext.splitlines())

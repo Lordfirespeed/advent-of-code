@@ -7,7 +7,7 @@ def getvalue(index):
     valuechildren = []
     metadata = []
     nochildren = inputlist[index]
-    nometadata = inputlist[index+1]
+    nometadata = inputlist[index + 1]
     nextindex = index + 2
     if nochildren > 0:
         for childno in range(0, nochildren):

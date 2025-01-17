@@ -1,4 +1,5 @@
 from math import ceil
+
 debug = False
 
 
@@ -75,8 +76,23 @@ def getbasecost(molecule, number, reactions, spareMolecules={}):
 
 
 with open("Input/2019day14testinput.txt") as inputfile:
-    reactions = [[[tuple(molecule.split(" ")) for molecule in molecules.split(", ")] for molecules in line.strip().split(" => ")] for line in inputfile.readlines()]
-reactions = [[dict([(molecule, int(number)) for number, molecule in molecules]) for molecules in reaction] for reaction in reactions]
-reactions = dict([(list(product.keys())[0], (list(product.values())[0], reactants)) for reactants, product in reactions])
+    reactions = [
+        [
+            [tuple(molecule.split(" ")) for molecule in molecules.split(", ")]
+            for molecules in line.strip().split(" => ")
+        ]
+        for line in inputfile.readlines()
+    ]
+    reactions = [
+        [
+            dict([(molecule, int(number)) for number, molecule in molecules])
+            for molecules in reaction
+        ]
+        for reaction in reactions
+    ]
+    reactions = {
+        list(product.keys())[0]: (list(product.values())[0], reactants)
+        for reactants, product in reactions
+    }
 
 print(ans1 := getbasecost("FUEL", 1, reactions), {"VRPVC": 0, "BHXH": 0})

@@ -7,9 +7,9 @@ while index < len(inputstring):
     if inputstring[index] == "(":
         startmarker = index
         endmarker = inputstring.index(")", index)
-        strlength, repeat = list(map(int, inputstring[startmarker+1:endmarker].split("x")))
-        jumpto = endmarker+strlength+1
-        outstring += (inputstring[endmarker+1:endmarker+strlength+1] * repeat)
+        strlength, repeat = list(map(int, inputstring[startmarker + 1:endmarker].split("x")))
+        jumpto = endmarker + strlength + 1
+        outstring += (inputstring[endmarker + 1:endmarker + strlength + 1] * repeat)
         index = jumpto
     else:
         outstring += inputstring[index]

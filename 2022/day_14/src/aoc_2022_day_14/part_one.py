@@ -1,8 +1,9 @@
-from common.vectors import Vector2
 from collections import defaultdict
+from copy import copy
 from enum import Enum, auto
 from typing import overload, Any
-from copy import copy
+
+from common.vectors import Vector2
 
 
 class TileState(Enum):
