@@ -5,7 +5,7 @@
 # https://github.com/openjdk/jdk/blob/f64f22b360f68df68ebb875bd0ef08ba61702952/src/java.base/share/classes/java/util/BitSet.java
 # Copyright (c) 1995, 2024, Oracle and/or its affiliates. All rights reserved.
 # Oracle and/or its affiliates license the referenced material to Lordfirespeed under the terms of the GPL-2.0-only license.
-
+from functools import wraps
 from operator import index
 from typing import (
     ClassVar,
@@ -20,8 +20,7 @@ from typing import (
 from numpy import dtype, ndarray, uint64, zeros as array_of_zeros
 
 from util.bit_twiddling import (
-    first_set_bit_index,
-    circular_left_shift,
+    first_set_bit_index, last_set_bit_index,
 )
 from util.protocols import SupportsBool
 
@@ -54,7 +53,7 @@ class BitSet:
     the minimum required to uniquely index a position in a word.
     """
     bits_per_word: ClassVar[int] = 1 << address_bits_per_word
-    bit_index_mask: ClassVar[int] = bits_per_word - 1
+    bit_index_mask: ClassVar[uint64] = uint64(bits_per_word - 1)
 
     word_mask: ClassVar[uint64] = ~uint64(0)
 
@@ -84,7 +83,7 @@ class BitSet:
         new_word_count = max(2 * len(self._words), word_count)
         # missing entries are initialised to zero when an NDArray is enlarged
         # https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html#numpy.ndarray.resize
-        self._words = self._words.resize(new_word_count)
+        self._words.resize(new_word_count)
 
     def _expand_to(self, word_index: int) -> None:
         """
@@ -215,7 +214,9 @@ class BitSet:
 
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
-        self._words[word_index] ^= circular_left_shift(uint64(1), bit_index, self.bits_per_word)
+
+        bit_index_in_word = bit_index & self.bit_index_mask
+        self._words[word_index] ^= uint64(1) << bit_index_in_word
 
         self._recalculate_words_in_use()
         self._ensure_invariants()
@@ -235,7 +236,9 @@ class BitSet:
 
         word_index = self._word_index(bit_index)
         self._expand_to(word_index)
-        self._words[word_index] |= circular_left_shift(uint64(1), bit_index, self.bits_per_word)
+
+        bit_index_in_word = bit_index & self.bit_index_mask
+        self._words[word_index] |= uint64(1) << bit_index_in_word
 
     def set_region(self, bit_slice: slice, value: SupportsBool = True) -> None:
         raise NotImplemented
@@ -251,7 +254,8 @@ class BitSet:
         if word_index >= self._words_in_use:
             return
 
-        self._words[word_index] &= ~circular_left_shift(uint64(1), bit_index, self.bits_per_word)
+        bit_index_in_word = bit_index & self.bit_index_mask
+        self._words[word_index] &= ~(uint64(1) << bit_index_in_word)
 
         self._recalculate_words_in_use()
         self._ensure_invariants()
@@ -301,17 +305,62 @@ class BitSet:
         word_index = self._word_index(bit_index)
         if word_index >= self._words_in_use:
             return False
-        masked_word = self._words[word_index] & circular_left_shift(uint64(1), bit_index, self.bits_per_word)
+        bit_index_in_word = bit_index & self.bit_index_mask
+        masked_word = self._words[word_index] & (uint64(1) << bit_index_in_word)
         return bool(masked_word != 0)
 
     def get_region(self, bit_slice: slice) -> Self:
         raise NotImplemented
 
     def next_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
-        raise NotImplemented
+        if from_index is None:
+            from_index = 0
+        if from_index < 0:
+            from_index += len(self)
+        if from_index < 0:
+            raise IndexError("BitSet index out of range")
+
+        self._ensure_invariants()
+
+        word_index = self._word_index(from_index)
+        if word_index >= self._words_in_use:
+            return -1
+
+        from_index_in_word = from_index & self.bit_index_mask
+        word = self._words[word_index] & (self.word_mask << from_index_in_word)
+
+        while True:
+            if word != 0:
+                return (word_index * self.bits_per_word) + last_set_bit_index(word)
+            word_index += 1
+            if word_index >= self._words_in_use:
+                return -1
+            word = self._words[word_index]
 
     def next_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
-        raise NotImplemented
+        if from_index is None:
+            from_index = 0
+        if from_index < 0:
+            from_index += len(self)
+        if from_index < 0:
+            raise IndexError("BitSet index out of range")
+
+        self._ensure_invariants()
+
+        word_index = self._word_index(from_index)
+        if word_index >= self._words_in_use:
+            return from_index
+
+        from_index_in_word = from_index & self.bit_index_mask
+        word = ~(self._words[word_index]) & (self.word_mask << from_index_in_word)
+
+        while True:
+            if word != 0:
+                return (word_index * self.bits_per_word) + last_set_bit_index(word)
+            word_index += 1
+            if word_index >= self._words_in_use:
+                return -1
+            word = ~(self._words[word_index])
 
     def previous_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
         raise NotImplemented
