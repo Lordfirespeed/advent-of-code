@@ -26,9 +26,10 @@ def signed_byte_length(value: SupportsInt) -> int:
     return (value.bit_length() >> 3) + 1
 
 
-def signed_bin(value: SupportsInt) -> str:
+def signed_bin(value: SupportsInt, binary_byte_length: int | None = None) -> str:
     value = int(value)
-    binary_byte_length = signed_byte_length(value)
+    if binary_byte_length is None:
+        binary_byte_length = signed_byte_length(value)
     binary_bit_length = binary_byte_length * 8
     signed_value_bytes = value.to_bytes(length=binary_byte_length, signed=True)
     unsigned_value_integer = int.from_bytes(signed_value_bytes)
