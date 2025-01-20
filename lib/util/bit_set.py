@@ -403,7 +403,32 @@ class BitSet:
         """
         Find the index of the previous '0' bit, starting from from_index (exclusive).
         """
-        raise NotImplemented
+        if from_index is None:
+            from_index = len(self)
+        from_index = index(from_index)
+        if from_index < 0:
+            from_index += len(self)
+        if from_index < 0:
+            raise IndexError("BitSet index out of range")
+
+        self._ensure_invariants()
+
+        word_index = self._word_index(from_index)
+        from_index_in_word = from_index & self.bit_index_mask
+        if word_index >= self._words_in_use and from_index_in_word > 0:
+            return from_index - 1
+        elif word_index == self._words_in_use:
+            word = 0
+        else:
+            word = ~self._words[word_index] & (self.word_mask >> (self.bits_per_word - from_index_in_word))
+
+        while True:
+            if word != 0:
+                return (word_index * self.bits_per_word) + first_set_bit_index(word)
+            word_index -= 1
+            if word_index < 0:
+                return -1
+            word = ~self._words[word_index]
 
     def intersects(self, other: Self) -> bool:
         """
