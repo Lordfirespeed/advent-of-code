@@ -5,7 +5,7 @@
 # https://github.com/openjdk/jdk/blob/f64f22b360f68df68ebb875bd0ef08ba61702952/src/java.base/share/classes/java/util/BitSet.java
 # Copyright (c) 1995, 2024, Oracle and/or its affiliates. All rights reserved.
 # Oracle and/or its affiliates license the referenced material to Lordfirespeed under the terms of the GPL-2.0-only license.
-from functools import wraps
+
 from operator import index
 from typing import (
     ClassVar,
