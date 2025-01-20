@@ -313,6 +313,9 @@ class BitSet:
         raise NotImplemented
 
     def next_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
+        """
+        Find the index of the next '1' bit, starting from from_index (inclusive).
+        """
         if from_index is None:
             from_index = 0
         if from_index < 0:
@@ -337,7 +340,10 @@ class BitSet:
                 return -1
             word = self._words[word_index]
 
-    def next_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
+    def next_clear_bit_index(self, from_index: SupportsIndex = None) -> int:
+        """
+        Find the index of the next '0' bit, starting from from_index (inclusive).
+        """
         if from_index is None:
             from_index = 0
         if from_index < 0:
@@ -359,13 +365,19 @@ class BitSet:
                 return (word_index * self.bits_per_word) + last_set_bit_index(word)
             word_index += 1
             if word_index >= self._words_in_use:
-                return -1
+                return word_index * self.bits_per_word
             word = ~(self._words[word_index])
 
     def previous_set_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
+        """
+        Find the index of the previous '1' bit, starting from from_index (exclusive).
+        """
         raise NotImplemented
 
     def previous_clear_bit_index(self, from_index: SupportsIndex = None) -> int | Literal[-1]:
+        """
+        Find the index of the previous '0' bit, starting from from_index (exclusive).
+        """
         raise NotImplemented
 
     def intersects(self, other: Self) -> bool:
