@@ -10,6 +10,7 @@ from operator import index
 from typing import (
     ClassVar,
     Iterable,
+    Iterator,
     Literal,
     Self,
     SupportsBytes,
@@ -466,13 +467,30 @@ class BitSet:
 
     # region 'public' API/methods/iterators
 
-    def boolean_values(self) -> Iterable[bool]:
-        raise NotImplemented
+    def boolean_values(self) -> Iterator[bool]:
+        cursor = 0
+        while True:
+            if cursor >= len(self):
+                return
+            yield self[cursor]
+            cursor += 1
 
-    def set_bit_indices(self) -> Iterable[int]:
-        raise NotImplemented
+    def set_bit_indices(self) -> Iterator[int]:
+        cursor = 0
+        while True:
+            set_bit_index = self.next_set_bit_index(cursor)
+            if set_bit_index == -1:
+                return
+            cursor = set_bit_index + 1
+            yield set_bit_index
 
-    def clear_bit_indices(self) -> Iterable[int]:
-        raise NotImplemented
+    def clear_bit_indices(self) -> Iterator[int]:
+        cursor = 0
+        while True:
+            clear_bit_index = self.next_clear_bit_index(cursor)
+            if clear_bit_index >= len(self):
+                return
+            cursor = clear_bit_index + 1
+            yield clear_bit_index
 
     # endregion
