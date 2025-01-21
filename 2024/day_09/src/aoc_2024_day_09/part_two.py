@@ -50,44 +50,44 @@ class Disk:
 
             mode = ~mode
 
-    def next_free_space_block_span_index(self, from_index: int) -> int | None:
-        cursor = from_index
+    def index_of_next_free_space_block_span_at_least_sized(self, size: int) -> int | None:
+        cursor = 0
         while True:
             if cursor >= len(self.block_spans):
                 return None
             block_span = self.block_spans[cursor]
-            if block_span.is_free_space:
-                return cursor
-            cursor += 1
+            if not block_span.is_free_space:
+                cursor += 1
+                continue
+            if len(block_span.span) < size:
+                cursor += 1
+                continue
+            return cursor
 
-    def index_of_last_block_span_at_most_sized(self, size: int) -> int | None:
-        cursor = len(self.block_spans) - 1
+    def index_of_last_file_block_span(self, from_index: int) -> int | None:
+        cursor = from_index
         while True:
             if cursor < 0:
                 return None
             block_span = self.block_spans[cursor]
-
-            if block_span.is_free_space:
-                cursor -= 1
-                continue
-            if len(block_span.span) > size:
-                cursor -= 1
-                continue
-            return cursor
+            if not block_span.is_free_space:
+                return cursor
+            cursor -= 1
 
     def de_fragment(self) -> None:
-        free_space_index: int = 0
+        file_to_move_index: int = len(self.block_spans) - 1
         while True:
-            free_space_index = self.next_free_space_block_span_index(free_space_index)
-            if free_space_index is None:
+            file_to_move_index = self.index_of_last_file_block_span(file_to_move_index)
+            if file_to_move_index is None:
                 return
-            free_space_block_span = self.block_spans[free_space_index]
-            file_to_move_index = self.index_of_last_block_span_at_most_sized(len(free_space_block_span.span))
-            if file_to_move_index is None or file_to_move_index < free_space_index:
-                free_space_index += 1
-                continue
 
             file_to_move_block_span = self.block_spans[file_to_move_index]
+            free_space_index = self.index_of_next_free_space_block_span_at_least_sized(len(file_to_move_block_span.span))
+            if free_space_index is None or free_space_index > file_to_move_index:
+                file_to_move_index -= 1
+                continue
+
+            free_space_block_span = self.block_spans[free_space_index]
 
             new_file_start_block_index = free_space_block_span.span.start
             new_file_end_block_index = free_space_block_span.span.start + len(file_to_move_block_span.span)
@@ -104,22 +104,16 @@ class Disk:
                     BlockSpan(file_to_move_block_span.file, new_file_block_index_span),
                     BlockSpan(None, new_free_space_block_index_span),
                 ]
+                file_to_move_index += 1
 
             file_to_move_block_span.file = None
             self.collect_free_space_near(file_to_move_index)
-            free_space_index += 1
+            file_to_move_index -= 1
 
     def collect_free_space_near(self, block_span_index: int) -> None:
         block_span = self.block_spans[block_span_index]
         if not block_span.is_free_space:
             return
-
-        if block_span_index > 0:
-            left_block_span = self.block_spans[block_span_index - 1]
-            if left_block_span.is_free_space:
-                del self.block_spans[block_span_index - 1]
-                block_span_index -= 1
-                block_span.span = block_span.span.union(left_block_span.span)
 
         if block_span_index < len(self.block_spans) - 1:
             right_block_span = self.block_spans[block_span_index + 1]
@@ -127,8 +121,20 @@ class Disk:
                 del self.block_spans[block_span_index + 1]
                 block_span.span = block_span.span.union(right_block_span.span)
 
+        if block_span_index > 0:
+            left_block_span = self.block_spans[block_span_index - 1]
+            if left_block_span.is_free_space:
+                del self.block_spans[block_span_index - 1]
+                block_span.span = block_span.span.union(left_block_span.span)
+
     def filesystem_checksum(self) -> int:
-        pass
+        accumulator = 0
+        for block_span in self.block_spans:
+            if block_span.file is None:
+                continue
+            for block_index in block_span.span:
+                accumulator += block_index * block_span.file.id
+        return accumulator
 
 
 class PartTwoSolver:
@@ -138,5 +144,4 @@ class PartTwoSolver:
     def solve(self) -> int:
         disk = Disk(self.instance.disk_map)
         disk.de_fragment()
-        pass
         return disk.filesystem_checksum()
