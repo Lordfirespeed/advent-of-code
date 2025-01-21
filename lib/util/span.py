@@ -169,3 +169,14 @@ class span(Sequence[int]):
         first_span = self.__class__(self.start, other.start)
         second_span = self.__class__(other.stop, self.stop)
         return first_span, second_span
+
+    def union(self, other: Self) -> Self:
+        if self.stop < other.start:
+            raise ValueError
+        if other.stop < self.start:
+            raise ValueError
+
+        return self.__class__(
+            min(self.start, other.start),
+            max(self.stop, other.stop),
+        )
