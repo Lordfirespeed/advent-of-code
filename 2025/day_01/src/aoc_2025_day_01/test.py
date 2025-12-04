@@ -17,12 +17,22 @@ class TestPartOne(unittest.TestCase):
         solver = PartOneSolver(instance)
         self.assertEqual(3, solver.solve())
 
+    def test_example_02(self):
+        instance = load_instance("example-02.txt")
+        solver = PartOneSolver(instance)
+        self.assertEqual(0, solver.solve())
+
 
 class TestPartTwo(unittest.TestCase):
     def test_example_01(self):
         instance = load_instance("example-01.txt")
         solver = PartTwoSolver(instance)
-        self.assertEqual(3, solver.solve())
+        self.assertEqual(6, solver.solve())
+
+    def test_example_02(self):
+        instance = load_instance("example-02.txt")
+        solver = PartTwoSolver(instance)
+        self.assertEqual(18, solver.solve())
 
 
 if __name__ == "__main__":
