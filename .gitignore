@@ -9,20 +9,32 @@
 ## editorconfig
 !.editorconfig
 
+## python
+!/.python-version
+
 ## pipenv
 !/Pipfile
 !/Pipfile.lock
 
+## uv
+!/pyproject.toml
+!/uv.lock
+
+## markdowns
+!/README.md
+
 ## 'cache' subdirs
 cache
-__pycache__
+__pycache__/
+*.py[oc]
+*.egg-info
 
 ## Template
 !/template
 !/template/*
 
 ## Common sources
-!/lib
+!/src
 
 ## Advent of Code year directories
 !/2015
