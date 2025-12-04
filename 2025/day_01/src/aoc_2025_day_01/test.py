@@ -34,6 +34,11 @@ class TestPartTwo(unittest.TestCase):
         solver = PartTwoSolver(instance)
         self.assertEqual(18, solver.solve())
 
+    def test_example_03(self):
+        instance = load_instance("example-03.txt")
+        solver = PartTwoSolver(instance)
+        self.assertEqual(1, solver.solve())
+
 
 if __name__ == "__main__":
     unittest.main()
