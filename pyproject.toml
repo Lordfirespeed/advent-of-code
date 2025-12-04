@@ -1,0 +1,13 @@
+[project]
+name = "advent-of-code"
+dynamic = ["version"]
+description = "Joe's Advent of Code solutions"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.13.2",
+    "beautifulsoup4>=4.14.3",
+    "jinja2>=3.1.6",
+    "numpy>=2.3.5",
+    "python-dotenv>=1.2.1",
+]
