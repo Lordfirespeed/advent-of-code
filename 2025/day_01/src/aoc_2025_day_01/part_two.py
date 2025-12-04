@@ -12,10 +12,12 @@ class PartTwoSolver:
         old_position = self.dial_position
         self.dial_position += sign * turn.distance
         overflows, new_position = divmod(self.dial_position, 100)
+        # if underflow occurs and dial was previously at zero, we didn't visit zero an extra time
         if overflows < 0 and old_position == 0:
             overflows += 1
         self.zero_count += abs(overflows)
         self.dial_position = new_position
+        # if no overflow occurs and dial is now pointing at zero, we visited zero an extra time
         if overflows <= 0 and new_position == 0:
             self.zero_count += 1
 
